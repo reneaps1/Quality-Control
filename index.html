@@ -15,6 +15,7 @@
     --tl-amber:#E6940A;--tl-amber-light:#FFF5E0;
     --tl-blue:#1A6FC4;--tl-blue-light:#E8F0FB;
     --tl-purple:#7C3AED;--tl-purple-light:#EDE9FE;
+    --tl-teal:#0D7377;--tl-teal-light:#E0F4F4;
     --tl-fail:#CC2027;--tl-fail-light:#FDECEC;
     --radius:12px;
     --shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.1);
@@ -72,6 +73,7 @@
   .module-card.color-blue::before{background:var(--tl-blue);}
   .module-card.color-purple::before{background:var(--tl-purple);}
   .module-card.color-amber::before{background:var(--tl-amber);}
+  .module-card.color-teal::before{background:var(--tl-teal);}
   .module-card:not(.disabled):hover{border-color:var(--tl-gray-300);box-shadow:var(--shadow-lg);transform:translateY(-3px);}
   .module-card.disabled{cursor:not-allowed;opacity:0.55;}
   .module-card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px;}
@@ -79,6 +81,34 @@
   .module-card.color-blue .module-card-icon{background:var(--tl-blue-light);}
   .module-card.color-purple .module-card-icon{background:var(--tl-purple-light);}
   .module-card.color-amber .module-card-icon{background:var(--tl-amber-light);}
+  .module-card.color-teal .module-card-icon{background:var(--tl-teal-light);}
+  /* alert severity / status */
+  .alert-sev{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .alert-sev.critica{background:var(--tl-fail-light);color:var(--tl-fail);}
+  .alert-sev.mayor{background:var(--tl-amber-light);color:var(--tl-amber);}
+  .alert-sev.menor{background:var(--tl-blue-light);color:var(--tl-blue);}
+  .alert-st{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .alert-st.abierta{background:var(--tl-fail-light);color:var(--tl-fail);}
+<br>  .alert-st.investigacion{background:var(--tl-amber-light);color:var(--tl-amber);}
+  .alert-st.cerrada{background:var(--tl-green-light);color:var(--tl-green);}
+  /* gestion cards */
+  .gr-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+  .gr-card{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;}
+  .gr-card-header{padding:16px 22px;border-bottom:1px solid var(--tl-gray-100);display:flex;align-items:center;justify-content:space-between;}
+  .gr-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:1px;}
+  .gr-count-badge{background:var(--tl-fail-light);color:var(--tl-fail);border-radius:20px;font-size:11px;font-weight:700;padding:3px 10px;}
+  .gr-count-badge.amber{background:var(--tl-amber-light);color:var(--tl-amber);}
+  .gr-list{padding:0;}
+  .gr-item{padding:16px 22px;border-bottom:1px solid var(--tl-gray-100);transition:background 0.15s;}
+  .gr-item:last-child{border-bottom:none;}
+  .gr-item:hover{background:var(--tl-gray-100);}
+  .gr-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px;}
+  .gr-item-title{font-weight:700;font-size:14px;flex:1;}
+  .gr-item-meta{font-size:12px;color:var(--tl-gray-500);display:flex;gap:12px;flex-wrap:wrap;}
+  .gr-item-meta span{display:flex;align-items:center;gap:4px;}
+  .gr-item-action{font-size:13px;color:var(--tl-gray-700);margin-top:6px;padding:8px 12px;background:var(--tl-gray-100);border-radius:6px;font-style:italic;}
+  .gr-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  @media(max-width:768px){.gr-grid{grid-template-columns:1fr}.gr-kpi-row{grid-template-columns:1fr 1fr}}
   .module-card-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;text-transform:uppercase;margin-bottom:6px;}
   .module-card-desc{color:var(--tl-gray-500);font-size:14px;line-height:1.5;}
   .module-card-badge{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
@@ -363,6 +393,13 @@
         <div class="module-card-desc">Visualización de indicadores clave de calidad: tasa de aprobación, productos con más fallas, tendencias por turno y resumen de inspecciones.</div>
         <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — Demo</div>
       </div>
+      <!-- Gestión de Reclamos -->
+      <div class="module-card color-teal animate-in" onclick="openModule('gestion')">
+        <div class="module-card-icon">&#128680;</div>
+        <div class="module-card-name">Gestión de Reclamos</div>
+        <div class="module-card-desc">Alertas de calidad activas y contenciones en proceso. Seguimiento en tiempo real de no conformidades y acciones correctivas.</div>
+        <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — <span id="panelAlertCount">3 alertas abiertas</span></div>
+      </div>
       <!-- Reclamaciones de Cliente -->
       <div class="module-card color-purple animate-in disabled">
         <div class="module-card-icon">&#128221;</div>
@@ -492,6 +529,35 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════
+       MÓDULO: GESTIÓN DE RECLAMOS
+  ══════════════════════════════════ -->
+  <div class="module" id="moduleGestion">
+    <div class="screen-title animate-in">Gestión de Reclamos</div>
+    <div class="screen-desc animate-in">Alertas de calidad activas y contenciones en proceso</div>
+
+    <!-- KPIs -->
+    <div class="gr-kpi-row" id="grKPIs"></div>
+
+    <!-- Alertas + Contenciones -->
+    <div class="gr-grid">
+      <div class="gr-card animate-in">
+        <div class="gr-card-header">
+          <div class="gr-card-title">&#128680; Alertas de Calidad</div>
+          <div class="gr-count-badge" id="grAlertBadge">—</div>
+        </div>
+        <div class="gr-list" id="grAlertList"></div>
+      </div>
+      <div class="gr-card animate-in">
+        <div class="gr-card-header">
+          <div class="gr-card-title">&#9203; Contenciones Activas</div>
+          <div class="gr-count-badge amber" id="grContBadge">—</div>
+        </div>
+        <div class="gr-list" id="grContList"></div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /main -->
 
 <!-- ── DB OVERLAY ── -->
@@ -536,6 +602,19 @@ const demo_inspections=[
   {id:'D09',folio:'TL-20260415-Y7Z8A9',fecha:'15/04/2026',hora:'06:12',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-047',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
   {id:'D10',folio:'TL-20260415-B1C2D3',fecha:'15/04/2026',hora:'06:50',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-047',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Amperaje ligeramente bajo. Fuente calibrada. Liberación autorizada por QA-02.'},
 ];
+const demo_alertas=[
+  {id:'ALT-001',titulo:'Amperaje fuera de spec — línea 3',severidad:'critica',status:'abierta',producto:'Headlamp 920L',lote:'L-2026-041',fecha:'14/04/2026',responsable:'QA-05 / J. Rodríguez',descripcion:'Amperaje medido 3.6A vs LSL 3.8A. Se detectó en 3 inspecciones consecutivas del turno 1.'},
+  {id:'ALT-002',titulo:'Torque inconsistente en ensamble housing',severidad:'mayor',status:'investigacion',producto:'Headlamp 120L',lote:'L-2026-042',fecha:'14/04/2026',responsable:'QA-02 / M. López',descripcion:'Torquímetro OP-03 fuera de calibración. Posible afectación de lotes L-2026-040 a L-2026-043.'},
+  {id:'ALT-003',titulo:'Apariencia cosmética — rayones en lente',severidad:'menor',status:'investigacion',producto:'Headlamp 800',lote:'L-2026-046',fecha:'14/04/2026',responsable:'QA-07 / A. Soto',descripcion:'Rayones superficiales detectados en 2 piezas del turno 3. Se revisará proceso de manejo.'},
+  {id:'ALT-004',titulo:'Sellado deficiente — prueba de agua',severidad:'mayor',status:'cerrada',producto:'Headlamp 120R',lote:'L-2026-038',fecha:'12/04/2026',responsable:'QA-01 / P. Ruiz',descripcion:'Falla de sellado en junta perimetral. Proveedor notificado. Lote devuelto. CERRADA.'},
+];
+const demo_contenciones=[
+  {id:'CNT-001',folio:'TL-20260414-G7H8I9',producto:'Headlamp 120L',lote:'L-2026-042',accion:'Se segregó pieza del flujo. Reajuste de torquímetro OP-03. Re-inspección 100% del lote en proceso.',responsable:'QA-05',dias:1,status:'activa'},
+  {id:'CNT-002',folio:'TL-20260414-P7Q8R9',producto:'Headlamp 120R',lote:'L-2026-044',accion:'Lote completo en cuarentena área Q2. Análisis 8D iniciado. Supervisor de turno notificado.',responsable:'QA-02',dias:1,status:'activa'},
+  {id:'CNT-003',folio:'TL-20260414-D4E5F6',producto:'Headlamp 800',lote:'L-2026-046',accion:'Revisión de proceso de manejo en estación 5. Capacitación programada para operadores T3.',responsable:'QA-07',dias:1,status:'revision'},
+  {id:'CNT-004',folio:'TL-20260412-Z9Y8X7',producto:'Headlamp 120R',lote:'L-2026-038',accion:'Junta perimetral reemplazada. Prueba de agua superada al 100%. Lote liberado.',responsable:'QA-01',dias:3,status:'cerrada'},
+];
+
 const demo_failed_controls=[
   {name:'Amperaje @ 12V',count:4,color:'red'},
   {name:'Torque de tornillos',count:3,color:'amber'},
@@ -543,6 +622,14 @@ const demo_failed_controls=[
   {name:'Sellado (prueba de agua)',count:1,color:'amber'},
   {name:'Diámetro de lente',count:1,color:'amber'},
 ];
+
+/* ── PANEL ALERT COUNTER (live) ── */
+function updatePanelAlertCount(){
+  const open=demo_alertas.filter(a=>a.status==='abierta').length;
+  const el=document.getElementById('panelAlertCount');
+  if(el)el.textContent=open+' alerta'+(open!==1?'s':'')+' abierta'+(open!==1?'s':'');
+}
+updatePanelAlertCount();
 
 /* ── CLOCK ── */
 function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
@@ -582,6 +669,11 @@ function openModule(name){
     document.getElementById('moduleReclamaciones').classList.add('active');
     document.getElementById('lpfNav').style.display='none';
     crumb.textContent='/ Reclamaciones de Cliente';
+  } else if(name==='gestion'){
+    document.getElementById('moduleGestion').classList.add('active');
+    document.getElementById('lpfNav').style.display='none';
+    crumb.textContent='/ Gestión de Reclamos';
+    renderGestion();
   } else if(name==='lpas'){
     document.getElementById('moduleLPAs').classList.add('active');
     document.getElementById('lpfNav').style.display='none';
@@ -860,6 +952,65 @@ function renderDashboard(){
         <td><span class="dash-badge ${r.resultado.toLowerCase()}">${r.resultado==='CONDITIONAL'?'COND.':r.resultado}</span></td>
       </tr>`).join('')}</tbody>
     </table>`;
+}
+
+/* ── GESTIÓN DE RECLAMOS ── */
+function renderGestion(){
+  const alertas=[...demo_alertas,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
+    id:'LIVE-'+r.id,titulo:'No conformidad — '+r.product,severidad:'mayor',status:'abierta',
+    producto:r.product,lote:r.lote,fecha:r.fecha,responsable:r.num_operador+' / '+r.operador,
+    descripcion:'Liberación condicionada registrada en sesión actual. Acción: '+(r.contencion||'N/A'),
+  }))];
+  const conts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
+    id:'LIVE-C'+r.id,folio:r.folio,producto:r.product,lote:r.lote,
+    accion:r.contencion||'Sin descripción',responsable:r.num_operador,dias:0,status:'activa',
+  }))];
+
+  const abiertas=alertas.filter(a=>a.status==='abierta').length;
+  const investig=alertas.filter(a=>a.status==='investigacion').length;
+  const contActivas=conts.filter(c=>c.status==='activa'||c.status==='revision').length;
+  const cerradas=alertas.filter(a=>a.status==='cerrada').length+conts.filter(c=>c.status==='cerrada').length;
+
+  document.getElementById('grKPIs').innerHTML=`
+    <div class="kpi-card kpi-red animate-in"><div class="kpi-label">Alertas Abiertas</div><div class="kpi-value">${abiertas}</div><div class="kpi-sub">requieren acción inmediata</div></div>
+    <div class="kpi-card kpi-amber animate-in"><div class="kpi-label">En Investigación</div><div class="kpi-value">${investig}</div><div class="kpi-sub">análisis en proceso</div></div>
+    <div class="kpi-card kpi-blue animate-in"><div class="kpi-label">Contenciones Activas</div><div class="kpi-value">${contActivas}</div><div class="kpi-sub">lotes en cuarentena / revisión</div></div>
+    <div class="kpi-card kpi-green animate-in"><div class="kpi-label">Cerradas</div><div class="kpi-value">${cerradas}</div><div class="kpi-sub">resueltas</div></div>`;
+
+  const sevLabel={critica:'CRÍTICA',mayor:'MAYOR',menor:'MENOR'};
+  const stLabel={abierta:'Abierta',investigacion:'En Investigación',cerrada:'Cerrada'};
+  document.getElementById('grAlertBadge').textContent=abiertas+' abierta'+(abiertas!==1?'s':'');
+  document.getElementById('grAlertList').innerHTML=alertas.map(a=>`
+    <div class="gr-item">
+      <div class="gr-item-top">
+        <div class="gr-item-title">${a.titulo}</div>
+        <span class="alert-sev ${a.severidad}">${sevLabel[a.severidad]||a.severidad}</span>
+      </div>
+      <div class="gr-item-meta">
+        <span>&#128230; ${a.producto}</span>
+        <span>&#128197; ${a.fecha}</span>
+        <span>&#128101; ${a.responsable}</span>
+        <span class="alert-st ${a.status}">${stLabel[a.status]||a.status}</span>
+      </div>
+      ${a.status!=='cerrada'?`<div class="gr-item-action">${a.descripcion}</div>`:''}
+    </div>`).join('');
+
+  document.getElementById('grContBadge').textContent=contActivas+' activa'+(contActivas!==1?'s':'');
+  const contStLabel={activa:'Activa',revision:'En Revisión',cerrada:'Cerrada'};
+  const contStClass={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
+  document.getElementById('grContList').innerHTML=conts.map(c=>`
+    <div class="gr-item">
+      <div class="gr-item-top">
+        <div class="gr-item-title">${c.id} — ${c.producto}</div>
+        <span class="alert-st ${contStClass[c.status]||'abierta'}">${contStLabel[c.status]||c.status}</span>
+      </div>
+      <div class="gr-item-meta">
+        <span>&#128230; Lote: ${c.lote}</span>
+        <span>&#128197; ${c.dias===0?'Hoy':c.dias+' día'+(c.dias!==1?'s':'')}</span>
+        <span>&#128101; ${c.responsable}</span>
+      </div>
+      <div class="gr-item-action">${c.accion}</div>
+    </div>`).join('');
 }
 </script>
 </body>
