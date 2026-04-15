@@ -159,6 +159,19 @@
   .gr-item-action{font-size:13px;color:var(--tl-gray-700);margin-top:6px;padding:8px 12px;background:var(--tl-gray-100);border-radius:6px;font-style:italic;}
   .gr-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
   @media(max-width:768px){.gr-grid{grid-template-columns:1fr}.gr-kpi-row{grid-template-columns:1fr 1fr}}
+  /* ── FILTROS ── */
+  .gr-filters{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .gr-filter-label{font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+  .gr-filter-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .gr-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--tl-gray-200);background:var(--tl-white);color:var(--tl-gray-500);transition:all 0.2s;text-transform:uppercase;letter-spacing:0.5px;}
+  .gr-chip:hover{border-color:var(--tl-gray-500);color:var(--tl-black);}
+  .gr-chip.active{background:var(--tl-black);border-color:var(--tl-black);color:var(--tl-white);}
+  .gr-chip.chip-abierta.active{background:var(--tl-fail);border-color:var(--tl-fail);color:var(--tl-white);}
+  .gr-chip.chip-investigacion.active{background:var(--tl-amber);border-color:var(--tl-amber);color:var(--tl-white);}
+  .gr-chip.chip-cerrada.active{background:var(--tl-green);border-color:var(--tl-green);color:var(--tl-white);}
+  .gr-divider{width:1px;height:28px;background:var(--tl-gray-100);flex-shrink:0;}
+  .gr-results-info{margin-left:auto;font-size:12px;color:var(--tl-gray-500);font-weight:600;}
+  @media(max-width:768px){.gr-filters{gap:12px}.gr-results-info{margin-left:0}}
   .gr-item.clickable{cursor:pointer;}
   .gr-item.clickable:hover{background:var(--tl-teal-light);}
   .gr-item-click-hint{font-size:11px;color:var(--tl-teal);font-weight:600;margin-top:4px;}
@@ -657,6 +670,25 @@
 
     <!-- KPIs -->
     <div class="gr-kpi-row" id="grKPIs"></div>
+
+    <!-- Filtros -->
+    <div class="gr-filters animate-in">
+      <div class="gr-filter-label">BU</div>
+      <div class="gr-filter-group" id="grFilterBU">
+        <div class="gr-chip active" data-bu="all" onclick="setGrFilter('bu','all')">Todas</div>
+        <div class="gr-chip" data-bu="CHL" onclick="setGrFilter('bu','CHL')">CHL</div>
+        <div class="gr-chip" data-bu="RIGID" onclick="setGrFilter('bu','RIGID')">RIGID</div>
+      </div>
+      <div class="gr-divider"></div>
+      <div class="gr-filter-label">Estatus</div>
+      <div class="gr-filter-group" id="grFilterStatus">
+        <div class="gr-chip active" data-st="all" onclick="setGrFilter('status','all')">Todos</div>
+        <div class="gr-chip chip-abierta" data-st="abierta" onclick="setGrFilter('status','abierta')">Abierta</div>
+        <div class="gr-chip chip-investigacion" data-st="investigacion" onclick="setGrFilter('status','investigacion')">En Investigación</div>
+        <div class="gr-chip chip-cerrada" data-st="cerrada" onclick="setGrFilter('status','cerrada')">Cerrada</div>
+      </div>
+      <div class="gr-results-info" id="grResultsInfo"></div>
+    </div>
 
     <!-- Alertas + Contenciones -->
     <div class="gr-grid">
@@ -1362,32 +1394,56 @@ function renderDashboard(){
 }
 
 /* ── GESTIÓN DE RECLAMOS ── */
-function renderGestion(){
+let grFilterBU='all', grFilterStatus='all';
+
+function setGrFilter(type, val){
+  if(type==='bu') grFilterBU=val;
+  else grFilterStatus=val;
+  /* Update chip styles */
+  const groupId=type==='bu'?'grFilterBU':'grFilterStatus';
+  const attr=type==='bu'?'data-bu':'data-st';
+  document.querySelectorAll(`#${groupId} .gr-chip`).forEach(c=>{
+    c.classList.toggle('active', c.getAttribute(attr)===val);
+  });
+  applyGrFilters();
+}
+
+function applyGrFilters(){
   const alertas=[...demo_alertas,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
     id:'LIVE-'+r.id,titulo:'No conformidad — '+r.product,severidad:'mayor',status:'abierta',
-    producto:r.product,lote:r.lote,fecha:r.fecha,responsable:r.num_operador+' / '+r.operador,
+    bu:'CHL',producto:r.product,lote:r.lote,fecha:r.fecha,
+    responsable:r.num_operador+' / '+r.operador,
     descripcion:'Liberación condicionada registrada en sesión actual. Acción: '+(r.contencion||'N/A'),
   }))];
   const conts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
-    id:'LIVE-C'+r.id,folio:r.folio,producto:r.product,lote:r.lote,
+    id:'LIVE-C'+r.id,folio:r.folio,bu:'CHL',producto:r.product,lote:r.lote,
     accion:r.contencion||'Sin descripción',responsable:r.num_operador,dias:0,status:'activa',
   }))];
 
-  const abiertas=alertas.filter(a=>a.status==='abierta').length;
-  const investig=alertas.filter(a=>a.status==='investigacion').length;
-  const contActivas=conts.filter(c=>c.status==='activa'||c.status==='revision').length;
-  const cerradas=alertas.filter(a=>a.status==='cerrada').length+conts.filter(c=>c.status==='cerrada').length;
+  /* Map contención status to alerta-style status for the filter */
+  const contStatusMap={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
 
-  document.getElementById('grKPIs').innerHTML=`
-    <div class="kpi-card kpi-red animate-in"><div class="kpi-label">Alertas Abiertas</div><div class="kpi-value">${abiertas}</div><div class="kpi-sub">requieren acción inmediata</div></div>
-    <div class="kpi-card kpi-amber animate-in"><div class="kpi-label">En Investigación</div><div class="kpi-value">${investig}</div><div class="kpi-sub">análisis en proceso</div></div>
-    <div class="kpi-card kpi-blue animate-in"><div class="kpi-label">Contenciones Activas</div><div class="kpi-value">${contActivas}</div><div class="kpi-sub">lotes en cuarentena / revisión</div></div>
-    <div class="kpi-card kpi-green animate-in"><div class="kpi-label">Cerradas</div><div class="kpi-value">${cerradas}</div><div class="kpi-sub">resueltas</div></div>`;
+  const filtA=alertas.filter(a=>
+    (grFilterBU==='all'||a.bu===grFilterBU) &&
+    (grFilterStatus==='all'||a.status===grFilterStatus)
+  );
+  const filtC=conts.filter(c=>
+    (grFilterBU==='all'||c.bu===grFilterBU) &&
+    (grFilterStatus==='all'||contStatusMap[c.status]===grFilterStatus||c.status===grFilterStatus)
+  );
 
   const sevLabel={critica:'CRÍTICA',mayor:'MAYOR',menor:'MENOR'};
   const stLabel={abierta:'Abierta',investigacion:'En Investigación',cerrada:'Cerrada'};
-  document.getElementById('grAlertBadge').textContent=abiertas+' abierta'+(abiertas!==1?'s':'');
-  document.getElementById('grAlertList').innerHTML=alertas.map(a=>`
+  const contStLabel={activa:'Activa',revision:'En Revisión',cerrada:'Cerrada'};
+  const contStClass={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
+
+  /* Results info */
+  document.getElementById('grResultsInfo').textContent=
+    `${filtA.length} alerta${filtA.length!==1?'s':''} · ${filtC.length} contención${filtC.length!==1?'es':''}`;
+
+  /* Alerts */
+  document.getElementById('grAlertBadge').textContent=filtA.length+' resultado'+(filtA.length!==1?'s':'');
+  document.getElementById('grAlertList').innerHTML=filtA.length?filtA.map(a=>`
     <div class="gr-item">
       <div class="gr-item-top">
         <div class="gr-item-title">${a.titulo}</div>
@@ -1400,12 +1456,12 @@ function renderGestion(){
         <span class="alert-st ${a.status}">${stLabel[a.status]||a.status}</span>
       </div>
       ${a.status!=='cerrada'?`<div class="gr-item-action">${a.descripcion}</div>`:''}
-    </div>`).join('');
+    </div>`).join('')
+    :'<div class="db-empty" style="padding:32px"><div class="db-empty-text">Sin resultados para los filtros seleccionados</div></div>';
 
-  document.getElementById('grContBadge').textContent=contActivas+' activa'+(contActivas!==1?'s':'');
-  const contStLabel={activa:'Activa',revision:'En Revisión',cerrada:'Cerrada'};
-  const contStClass={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
-  document.getElementById('grContList').innerHTML=conts.map(c=>`
+  /* Containments */
+  document.getElementById('grContBadge').textContent=filtC.length+' resultado'+(filtC.length!==1?'s':'');
+  document.getElementById('grContList').innerHTML=filtC.length?filtC.map(c=>`
     <div class="gr-item clickable" onclick="openContencionReport('${c.id}')">
       <div class="gr-item-top">
         <div class="gr-item-title">${c.id} — ${c.producto}</div>
@@ -1418,7 +1474,39 @@ function renderGestion(){
       </div>
       <div class="gr-item-action">${c.accion}</div>
       <div class="gr-item-click-hint">&#128065; Ver reporte completo →</div>
-    </div>`).join('');
+    </div>`).join('')
+    :'<div class="db-empty" style="padding:32px"><div class="db-empty-text">Sin resultados para los filtros seleccionados</div></div>';
+}
+
+function renderGestion(){
+  const alertas=[...demo_alertas,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
+    id:'LIVE-'+r.id,titulo:'No conformidad — '+r.product,severidad:'mayor',status:'abierta',
+    bu:'CHL',producto:r.product,lote:r.lote,fecha:r.fecha,
+    responsable:r.num_operador+' / '+r.operador,
+    descripcion:'Liberación condicionada registrada en sesión actual. Acción: '+(r.contencion||'N/A'),
+  }))];
+  const conts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
+    id:'LIVE-C'+r.id,folio:r.folio,bu:'CHL',producto:r.product,lote:r.lote,
+    accion:r.contencion||'Sin descripción',responsable:r.num_operador,dias:0,status:'activa',
+  }))];
+
+  /* Reset filters on module open */
+  grFilterBU='all'; grFilterStatus='all';
+  document.querySelectorAll('#grFilterBU .gr-chip').forEach(c=>c.classList.toggle('active',c.getAttribute('data-bu')==='all'));
+  document.querySelectorAll('#grFilterStatus .gr-chip').forEach(c=>c.classList.toggle('active',c.getAttribute('data-st')==='all'));
+
+  const abiertas=alertas.filter(a=>a.status==='abierta').length;
+  const investig=alertas.filter(a=>a.status==='investigacion').length;
+  const contActivas=conts.filter(c=>c.status==='activa'||c.status==='revision').length;
+  const cerradas=alertas.filter(a=>a.status==='cerrada').length+conts.filter(c=>c.status==='cerrada').length;
+
+  document.getElementById('grKPIs').innerHTML=`
+    <div class="kpi-card kpi-red animate-in"><div class="kpi-label">Alertas Abiertas</div><div class="kpi-value">${abiertas}</div><div class="kpi-sub">requieren acción inmediata</div></div>
+    <div class="kpi-card kpi-amber animate-in"><div class="kpi-label">En Investigación</div><div class="kpi-value">${investig}</div><div class="kpi-sub">análisis en proceso</div></div>
+    <div class="kpi-card kpi-blue animate-in"><div class="kpi-label">Contenciones Activas</div><div class="kpi-value">${contActivas}</div><div class="kpi-sub">lotes en cuarentena / revisión</div></div>
+    <div class="kpi-card kpi-green animate-in"><div class="kpi-label">Cerradas</div><div class="kpi-value">${cerradas}</div><div class="kpi-sub">resueltas</div></div>`;
+
+  applyGrFilters();
 }
 
 /* ── REPORTE DE CONTENCIÓN ── */
