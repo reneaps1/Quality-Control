@@ -16,6 +16,7 @@
     --tl-blue:#1A6FC4;--tl-blue-light:#E8F0FB;
     --tl-purple:#7C3AED;--tl-purple-light:#EDE9FE;
     --tl-teal:#0D7377;--tl-teal-light:#E0F4F4;
+    --tl-orange:#D4600A;--tl-orange-light:#FFF0E6;
     --tl-fail:#CC2027;--tl-fail-light:#FDECEC;
     --radius:12px;
     --shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.1);
@@ -84,6 +85,8 @@
   .module-card.color-teal .module-card-icon{background:var(--tl-teal-light);}
   .module-card.color-green::before{background:var(--tl-green);}
   .module-card.color-green .module-card-icon{background:var(--tl-green-light);}
+  .module-card.color-orange::before{background:var(--tl-orange);}
+  .module-card.color-orange .module-card-icon{background:var(--tl-orange-light);}
   /* ── 8D MODULE ── */
   .eightd-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
   .eightd-list{display:flex;flex-direction:column;gap:16px;}
@@ -411,6 +414,66 @@
   .dash-badge.conditional{background:var(--tl-amber-light);color:var(--tl-amber);}
   .dash-note{font-size:12px;color:var(--tl-gray-500);margin-top:12px;text-align:center;}
 
+  /* ── 5S MODULE ── */
+  .fs-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  .fs-filters{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .fs-filter-label{font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;}
+  .fs-chip{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--tl-gray-200);background:var(--tl-white);color:var(--tl-gray-500);transition:all 0.2s;text-transform:uppercase;}
+  .fs-chip:hover{border-color:var(--tl-gray-500);color:var(--tl-black);}
+  .fs-chip.active{background:var(--tl-black);border-color:var(--tl-black);color:var(--tl-white);}
+  .fs-chip.chip-aprobada.active{background:var(--tl-green);border-color:var(--tl-green);}
+  .fs-chip.chip-observaciones.active{background:var(--tl-amber);border-color:var(--tl-amber);}
+  .fs-chip.chip-reprobada.active{background:var(--tl-fail);border-color:var(--tl-fail);}
+  .fs-table-wrap{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;}
+  .fs-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .fs-table thead th{background:var(--tl-black);color:var(--tl-white);text-align:center;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+  .fs-table thead th:first-child,.fs-table thead th:nth-child(2){text-align:left;}
+  .fs-table tbody td{padding:12px 14px;border-bottom:1px solid var(--tl-gray-100);text-align:center;vertical-align:middle;}
+  .fs-table tbody td:first-child,.fs-table tbody td:nth-child(2){text-align:left;}
+  .fs-table tbody tr:hover{background:var(--tl-gray-100);cursor:pointer;}
+  .fs-score{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;}
+  .fs-score.high{color:var(--tl-green);}
+  .fs-score.mid{color:var(--tl-amber);}
+  .fs-score.low{color:var(--tl-fail);}
+  .fs-st{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;}
+  .fs-st.aprobada{background:var(--tl-green-light);color:var(--tl-green);}
+  .fs-st.observaciones{background:var(--tl-amber-light);color:var(--tl-amber);}
+  .fs-st.reprobada{background:var(--tl-fail-light);color:var(--tl-fail);}
+  /* 5S detail card */
+  .fs-detail{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;margin-top:20px;}
+  .fs-detail-header{background:var(--tl-black);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .fs-detail-id{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--tl-white);}
+  .fs-detail-meta{font-size:12px;color:var(--tl-gray-500);}
+  .fs-detail-close{background:none;border:none;color:var(--tl-gray-500);font-size:28px;cursor:pointer;line-height:1;}
+  .fs-detail-close:hover{color:var(--tl-white);}
+  .fs-detail-body{padding:28px;}
+  .fs-s-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;}
+  .fs-s-card{border-radius:10px;padding:16px;text-align:center;border:2px solid var(--tl-gray-100);}
+  .fs-s-card.high{border-color:var(--tl-green);background:var(--tl-green-light);}
+  .fs-s-card.mid{border-color:var(--tl-amber);background:var(--tl-amber-light);}
+  .fs-s-card.low{border-color:var(--tl-fail);background:var(--tl-fail-light);}
+  .fs-s-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;margin-bottom:2px;}
+  .fs-s-card.high .fs-s-name{color:var(--tl-green);}
+  .fs-s-card.mid .fs-s-name{color:var(--tl-amber);}
+  .fs-s-card.low .fs-s-name{color:var(--tl-fail);}
+  .fs-s-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;color:var(--tl-gray-700);}
+  .fs-s-score{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;line-height:1;}
+  .fs-s-card.high .fs-s-score{color:var(--tl-green);}
+  .fs-s-card.mid .fs-s-score{color:var(--tl-amber);}
+  .fs-s-card.low .fs-s-score{color:var(--tl-fail);}
+  .fs-s-max{font-size:11px;color:var(--tl-gray-500);}
+  .fs-obs-box{background:var(--tl-gray-100);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
+  .fs-obs-label{font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .fs-obs-text{font-size:14px;line-height:1.5;}
+  .fs-action-list{display:flex;flex-direction:column;gap:10px;}
+  .fs-action-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:8px;border:2px solid var(--tl-gray-100);}
+  .fs-action-item.done{border-color:var(--tl-green);background:var(--tl-green-light);}
+  .fs-action-item.open{border-color:var(--tl-amber);background:var(--tl-amber-light);}
+  .fs-action-icon{font-size:18px;flex-shrink:0;}
+  .fs-action-text{font-size:13px;font-weight:600;flex:1;}
+  .fs-action-resp{font-size:11px;color:var(--tl-gray-500);}
+  @media(max-width:768px){.fs-kpi-row{grid-template-columns:1fr 1fr}.fs-s-grid{grid-template-columns:1fr 1fr}}
+
   /* ── COMING SOON ── */
   .coming-soon-wrap{max-width:600px;margin:60px auto;text-align:center;}
   .coming-soon-icon{font-size:72px;margin-bottom:24px;opacity:0.7;}
@@ -545,6 +608,13 @@
         <div class="module-card-name">LPAs</div>
         <div class="module-card-desc">Layered Process Audits: auditorías por capas para verificar el cumplimiento de estándares de proceso en línea de producción.</div>
         <div class="module-card-badge badge-soon">Próximamente</div>
+      </div>
+      <!-- 5S -->
+      <div class="module-card color-orange animate-in" onclick="openModule('fives')">
+        <div class="module-card-icon">&#129529;</div>
+        <div class="module-card-name">5S — Auditorías de Orden y Limpieza</div>
+        <div class="module-card-desc">Registro y seguimiento de auditorías 5S por línea de producción. Calificación por disciplina, acciones correctivas y tendencias.</div>
+        <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — <span id="panel5sCount">4 auditorías este mes</span></div>
       </div>
     </div>
   </div>
@@ -717,6 +787,41 @@
     <div class="screen-desc animate-in">Reportes 8D activos y cerrados</div>
     <div class="eightd-kpi-row" id="edKPIs"></div>
     <div class="eightd-list" id="edList"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MÓDULO: 5S
+  ══════════════════════════════════ -->
+  <div class="module" id="module5S">
+    <div class="screen-title animate-in">5S — Auditorías de Orden y Limpieza</div>
+    <div class="screen-desc animate-in">Registro y seguimiento de auditorías por línea de producción</div>
+    <div class="fs-kpi-row" id="fsKPIs"></div>
+    <div class="fs-filters" id="fsFilters">
+      <span class="fs-filter-label">Línea</span>
+      <div id="fsLineas" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      <div style="width:1px;height:24px;background:var(--tl-gray-100);flex-shrink:0;"></div>
+      <span class="fs-filter-label">Estatus</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="fs-chip active" data-fs-st="all" onclick="setFsFilter('st','all',this)">Todos</span>
+        <span class="fs-chip chip-aprobada" data-fs-st="aprobada" onclick="setFsFilter('st','aprobada',this)">Aprobada</span>
+        <span class="fs-chip chip-observaciones" data-fs-st="observaciones" onclick="setFsFilter('st','observaciones',this)">Con Observaciones</span>
+        <span class="fs-chip chip-reprobada" data-fs-st="reprobada" onclick="setFsFilter('st','reprobada',this)">Reprobada</span>
+      </div>
+      <span class="gr-results-info" id="fsResultsInfo"></span>
+    </div>
+    <div class="fs-table-wrap">
+      <table class="fs-table">
+        <thead>
+          <tr>
+            <th>Folio</th><th>Línea</th><th>Auditor</th><th>Fecha</th>
+            <th>Seiri</th><th>Seiton</th><th>Seiso</th><th>Seiketsu</th><th>Shitsuke</th>
+            <th>Total</th><th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="fsTableBody"></tbody>
+      </table>
+    </div>
+    <div id="fsDetailWrap"></div>
   </div>
 
 </div><!-- /main -->
@@ -1050,6 +1155,11 @@ function openModule(name){
     document.getElementById('moduleLPAs').classList.add('active');
     document.getElementById('lpfNav').style.display='none';
     crumb.textContent='/ LPAs';
+  } else if(name==='fives'){
+    document.getElementById('module5S').classList.add('active');
+    document.getElementById('lpfNav').style.display='none';
+    crumb.textContent='/ 5S';
+    renderFiveS();
   }
 }
 
@@ -1730,6 +1840,196 @@ function toggle8D(id){
   const isOpen=body.classList.contains('open');
   body.classList.toggle('open',!isOpen);
   chev.classList.toggle('open',!isOpen);
+}
+
+/* ── 5S MODULE ── */
+const demo_5s=[
+  {
+    id:'5S-2025-041',folio:'5S-2025-041',linea:'L-01 Truck-Lite 920',auditor:'Carlos Medina',fecha:'2025-04-10',turno:'1er Turno',
+    scores:{seiri:9,seiton:8,seiso:9,seiketsu:8,shitsuke:9},total:43,max:50,
+    status:'aprobada',
+    observaciones:'Área en excelentes condiciones. Materiales correctamente identificados y almacenados. Sin materiales obsoletos en estación.',
+    acciones:[
+      {texto:'Reemplazar etiqueta dañada en rack A3',resp:'M. López',status:'done'},
+      {texto:'Actualizar tabla de control visual en prensa',resp:'C. Medina',status:'done'}
+    ]
+  },
+  {
+    id:'5S-2025-040',folio:'5S-2025-040',linea:'L-02 Truck-Lite 120',auditor:'Ana Torres',fecha:'2025-04-09',turno:'2do Turno',
+    scores:{seiri:7,seiton:6,seiso:7,seiketsu:6,shitsuke:7},total:33,max:50,
+    status:'observaciones',
+    observaciones:'Se encontraron herramientas sin identificar en la estación 3. Área de scrap sin señalización adecuada. Piso con manchas de aceite cerca de prensa hidráulica.',
+    acciones:[
+      {texto:'Identificar y colocar en posición correcta herramientas Estación 3',resp:'A. Torres',status:'open'},
+      {texto:'Señalizar área de scrap con cinta delimitadora',resp:'Supervisor L-02',status:'open'},
+      {texto:'Limpiar y revisar fuga de aceite prensa hidráulica',resp:'Mtto. Preventivo',status:'open'}
+    ]
+  },
+  {
+    id:'5S-2025-039',folio:'5S-2025-039',linea:'L-03 Truck-Lite 800',auditor:'Jorge Reyes',fecha:'2025-04-08',turno:'1er Turno',
+    scores:{seiri:5,seiton:4,seiso:5,seiketsu:4,shitsuke:4},total:22,max:50,
+    status:'reprobada',
+    observaciones:'Área presenta acumulación de materiales sin clasificar desde semana pasada. Pasillos parcialmente obstruidos. Iluminación insuficiente en zona de ensamble. Requiere acción correctiva inmediata.',
+    acciones:[
+      {texto:'Clasificar y retirar materiales sin uso de área de ensamble',resp:'Supervisor L-03',status:'open'},
+      {texto:'Liberar pasillos — retiro de rack temporal',resp:'Almacén',status:'open'},
+      {texto:'Gestionar cambio de luminarias fundidas (3 pzas)',resp:'Mtto. Eléctrico',status:'open'},
+      {texto:'Re-auditar en 5 días hábiles',resp:'Calidad',status:'open'}
+    ]
+  },
+  {
+    id:'5S-2025-038',folio:'5S-2025-038',linea:'L-01 Truck-Lite 920',auditor:'Laura Soto',fecha:'2025-04-04',turno:'1er Turno',
+    scores:{seiri:8,seiton:9,seiso:8,seiketsu:9,shitsuke:8},total:42,max:50,
+    status:'aprobada',
+    observaciones:'Línea en óptimas condiciones. Control visual actualizado. Sin observaciones mayores.',
+    acciones:[
+      {texto:'Laminar nuevos estándares visuales impresos',resp:'L. Soto',status:'done'}
+    ]
+  },
+  {
+    id:'5S-2025-037',folio:'5S-2025-037',linea:'L-04 Ensamble Final',auditor:'Pedro Vázquez',fecha:'2025-04-02',turno:'3er Turno',
+    scores:{seiri:6,seiton:7,seiso:6,seiketsu:7,shitsuke:6},total:32,max:50,
+    status:'observaciones',
+    observaciones:'Cajas de rechazo sin identificar en estación de inspección visual. Cartón acumulado junto a salida de emergencia. Requiere atención en turno siguiente.',
+    acciones:[
+      {texto:'Etiquetar cajas de rechazo con folio y fecha',resp:'P. Vázquez',status:'done'},
+      {texto:'Retirar cartón de salida de emergencia',resp:'Operador turno 1',status:'open'}
+    ]
+  }
+];
+
+let fsFilterLinea='all';
+let fsFilterSt='all';
+let fsSelectedId=null;
+
+function scoreClass(s,max){
+  const pct=s/max;
+  if(pct>=0.8)return'high';
+  if(pct>=0.6)return'mid';
+  return'low';
+}
+
+function renderFiveS(){
+  fsFilterLinea='all';fsFilterSt='all';fsSelectedId=null;
+  document.getElementById('fsDetailWrap').innerHTML='';
+  // reset chips
+  document.querySelectorAll('[data-fs-st]').forEach(c=>{c.classList.toggle('active',c.dataset.fsSt==='all');});
+
+  // KPIs
+  const total=demo_5s.length;
+  const aprobadas=demo_5s.filter(a=>a.status==='aprobada').length;
+  const conObs=demo_5s.filter(a=>a.status==='observaciones').length;
+  const reprobadas=demo_5s.filter(a=>a.status==='reprobada').length;
+  const avgScore=Math.round(demo_5s.reduce((s,a)=>s+a.total,0)/demo_5s.length);
+  const avgPct=Math.round(avgScore/50*100);
+  document.getElementById('fsKPIs').innerHTML=`
+    <div class="kpi-card kpi-blue"><div class="kpi-label">Total Auditorías</div><div class="kpi-value">${total}</div><div class="kpi-sub">Este mes</div></div>
+    <div class="kpi-card kpi-green"><div class="kpi-label">Aprobadas</div><div class="kpi-value">${aprobadas}</div><div class="kpi-sub">${Math.round(aprobadas/total*100)}% del total</div></div>
+    <div class="kpi-card kpi-amber"><div class="kpi-label">Con Observaciones</div><div class="kpi-value">${conObs}</div><div class="kpi-sub">Requieren seguimiento</div></div>
+    <div class="kpi-card ${reprobadas>0?'kpi-red':'kpi-green'}"><div class="kpi-label">Reprobadas</div><div class="kpi-value">${reprobadas}</div><div class="kpi-sub">Acción inmediata</div></div>
+  `;
+
+  // Line filter chips
+  const lineas=[...new Set(demo_5s.map(a=>a.linea))];
+  document.getElementById('fsLineas').innerHTML=
+    `<span class="fs-chip active" data-fs-ln="all" onclick="setFsFilter('ln','all',this)">Todas</span>`+
+    lineas.map(l=>`<span class="fs-chip" data-fs-ln="${l}" onclick="setFsFilter('ln','${l}',this)">${l.split(' ').slice(0,2).join(' ')}</span>`).join('');
+
+  applyFsFilters();
+}
+
+function setFsFilter(type,val,el){
+  if(type==='ln'){
+    fsFilterLinea=val;
+    document.querySelectorAll('[data-fs-ln]').forEach(c=>c.classList.toggle('active',c.dataset.fsLn===val));
+  } else {
+    fsFilterSt=val;
+    document.querySelectorAll('[data-fs-st]').forEach(c=>c.classList.toggle('active',c.dataset.fsSt===val));
+  }
+  applyFsFilters();
+}
+
+function applyFsFilters(){
+  let list=demo_5s;
+  if(fsFilterLinea!=='all') list=list.filter(a=>a.linea===fsFilterLinea);
+  if(fsFilterSt!=='all') list=list.filter(a=>a.status===fsFilterSt);
+  document.getElementById('fsResultsInfo').textContent=`${list.length} registro${list.length!==1?'s':''} encontrado${list.length!==1?'s':''}`;
+  const tbody=document.getElementById('fsTableBody');
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--tl-gray-500);font-style:italic;">Sin registros para los filtros seleccionados</td></tr>`;return;}
+  tbody.innerHTML=list.map(a=>{
+    const sc=scoreClass(a.total,a.max);
+    const stHtml=`<span class="fs-st ${a.status}">${a.status==='observaciones'?'Observaciones':a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span>`;
+    return`<tr onclick="openFsDetail('${a.id}')" title="Ver detalle">
+      <td style="font-weight:700;font-family:'Barlow Condensed',sans-serif;">${a.folio}</td>
+      <td>${a.linea}</td>
+      <td>${a.auditor}</td>
+      <td>${a.fecha}</td>
+      <td class="fs-score ${scoreClass(a.scores.seiri,10)}">${a.scores.seiri}/10</td>
+      <td class="fs-score ${scoreClass(a.scores.seiton,10)}">${a.scores.seiton}/10</td>
+      <td class="fs-score ${scoreClass(a.scores.seiso,10)}">${a.scores.seiso}/10</td>
+      <td class="fs-score ${scoreClass(a.scores.seiketsu,10)}">${a.scores.seiketsu}/10</td>
+      <td class="fs-score ${scoreClass(a.scores.shitsuke,10)}">${a.scores.shitsuke}/10</td>
+      <td class="fs-score ${sc}" style="font-size:17px;">${a.total}/${a.max}</td>
+      <td>${stHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+function openFsDetail(id){
+  const a=demo_5s.find(x=>x.id===id);
+  if(!a)return;
+  fsSelectedId=id;
+  const sNames={seiri:'Seiri',seiton:'Seiton',seiso:'Seiso',seiketsu:'Seiketsu',shitsuke:'Shitsuke'};
+  const sDescs={seiri:'Clasificar',seiton:'Ordenar',seiso:'Limpiar',seiketsu:'Estandarizar',shitsuke:'Disciplinar'};
+  const sc=scoreClass(a.total,a.max);
+  const stHtml=`<span class="fs-st ${a.status}" style="font-size:13px;">${a.status==='observaciones'?'Con Observaciones':a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span>`;
+  const sCards=Object.entries(a.scores).map(([k,v])=>`
+    <div class="fs-s-card ${scoreClass(v,10)}">
+      <div class="fs-s-name">${sNames[k]}</div>
+      <div class="fs-s-title">${sDescs[k]}</div>
+      <div class="fs-s-score">${v}</div>
+      <div class="fs-s-max">/ 10</div>
+    </div>`).join('');
+  const accionesHtml=a.acciones.map(ac=>`
+    <div class="fs-action-item ${ac.status}">
+      <span class="fs-action-icon">${ac.status==='done'?'✅':'⚠️'}</span>
+      <span class="fs-action-text">${ac.texto}</span>
+      <span class="fs-action-resp">Resp: ${ac.resp}</span>
+    </div>`).join('');
+  const pct=Math.round(a.total/a.max*100);
+  document.getElementById('fsDetailWrap').innerHTML=`
+    <div class="fs-detail animate-in">
+      <div class="fs-detail-header">
+        <div>
+          <div class="fs-detail-id">&#128196; ${a.folio} ${stHtml}</div>
+          <div class="fs-detail-meta">${a.linea} &nbsp;|&nbsp; ${a.fecha} &nbsp;|&nbsp; ${a.turno} &nbsp;|&nbsp; Auditor: ${a.auditor}</div>
+        </div>
+        <button class="fs-detail-close" onclick="closeFsDetail()">×</button>
+      </div>
+      <div class="fs-detail-body">
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;">Calificación Total</span>
+            <span class="fs-score ${sc}" style="font-size:22px;">${a.total} / ${a.max} &nbsp; (${pct}%)</span>
+          </div>
+          <div style="background:var(--tl-gray-100);border-radius:6px;height:14px;overflow:hidden;">
+            <div style="height:100%;border-radius:6px;width:${pct}%;background:${sc==='high'?'var(--tl-green)':sc==='mid'?'var(--tl-amber)':'var(--tl-fail)'};transition:width 0.7s;"></div>
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Puntuación por S</div>
+        <div class="fs-s-grid">${sCards}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Observaciones</div>
+        <div class="fs-obs-box"><div class="fs-obs-text">${a.observaciones}</div></div>
+        <div style="font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Acciones Correctivas (${a.acciones.length})</div>
+        <div class="fs-action-list">${accionesHtml}</div>
+      </div>
+    </div>`;
+  document.getElementById('fsDetailWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function closeFsDetail(){
+  fsSelectedId=null;
+  document.getElementById('fsDetailWrap').innerHTML='';
 }
 </script>
 </body>
