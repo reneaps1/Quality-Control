@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truck-Lite QC Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tl-red: #CC2027; --tl-red-dark: #A01A1F; --tl-red-light: #E8434A;
+    --tl-black: #1A1A1A; --tl-dark: #2D2D2D; --tl-gray-900: #333333;
+    --tl-gray-700: #555555; --tl-gray-500: #888888; --tl-gray-300: #CCCCCC;
+    --tl-gray-100: #F0F0F0; --tl-white: #FFFFFF;
+    --tl-green: #2E9E5B; --tl-green-light: #E6F5EC;
+    --tl-amber: #E6940A; --tl-amber-light: #FFF5E0;
+    --tl-fail: #CC2027; --tl-fail-light: #FDECEC;
+    --radius: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08); --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.12); --shadow-xl: 0 16px 50px rgba(0,0,0,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Barlow',sans-serif; background:var(--tl-gray-100); color:var(--tl-black); min-height:100vh; overflow-x:hidden; }
+
+  .header { background:var(--tl-black); padding:0 32px; height:72px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.3); }
+  .header-left { display:flex; align-items:center; gap:20px; }
+  .logo-mark { width:44px; height:44px; background:var(--tl-red); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:14px; color:var(--tl-white); }
+  .header-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:22px; color:var(--tl-white); letter-spacing:1px; text-transform:uppercase; }
+  .header-subtitle { font-size:12px; color:var(--tl-gray-500); letter-spacing:2px; text-transform:uppercase; }
+  .header-right { display:flex; align-items:center; gap:16px; }
+  .header-badge { background:var(--tl-red); color:var(--tl-white); padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+  .header-time { color:var(--tl-gray-500); font-size:14px; font-weight:500; font-variant-numeric:tabular-nums; }
+  .db-tab-btn { background:var(--tl-dark); border:1px solid var(--tl-gray-700); color:var(--tl-gray-300); padding:8px 16px; border-radius:8px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .db-tab-btn:hover,.db-tab-btn.active { background:var(--tl-red); border-color:var(--tl-red); color:var(--tl-white); }
+
+  .progress-bar { background:var(--tl-dark); height:4px; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--tl-red),var(--tl-red-light)); transition:width 0.5s; border-radius:0 2px 2px 0; }
+
+  .steps-container { background:var(--tl-white); padding:16px 32px; display:flex; align-items:center; justify-content:center; gap:8px; border-bottom:1px solid var(--tl-gray-100); box-shadow:var(--shadow-sm); }
+  .step-item { display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; transition:all 0.3s; }
+  .step-item.active { background:var(--tl-fail-light); }
+  .step-item.completed { opacity:0.6; }
+  .step-item.pending { opacity:0.35; }
+  .step-number { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
+  .step-item.active .step-number { background:var(--tl-red); color:var(--tl-white); }
+  .step-item.completed .step-number { background:var(--tl-green); color:var(--tl-white); }
+  .step-item.pending .step-number { background:var(--tl-gray-300); color:var(--tl-white); }
+  .step-label { font-size:13px; font-weight:600; color:var(--tl-gray-700); white-space:nowrap; }
+  .step-arrow { color:var(--tl-gray-300); font-size:18px; margin:0 4px; }
+
+  .main { max-width:1100px; margin:0 auto; padding:32px 24px 100px; }
+  .screen-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:32px; color:var(--tl-black); text-transform:uppercase; margin-bottom:4px; }
+  .screen-desc { color:var(--tl-gray-700); font-size:16px; margin-bottom:28px; }
+
+  .bu-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+  .bu-card { background:var(--tl-white); border:2px solid transparent; border-radius:var(--radius); padding:32px 28px; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-sm); position:relative; overflow:hidden; }
+  .bu-card::before { content:''; position:absolute; top:0; left:0; width:5px; height:100%; background:var(--tl-red); transform:scaleY(0); transition:transform 0.3s; transform-origin:top; }
+  .bu-card:hover { border-color:var(--tl-red); box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+  .bu-card:hover::before { transform:scaleY(1); }
+  .bu-card.disabled { opacity:0.4; cursor:not-allowed; }
+  .bu-card.disabled:hover { border-color:transparent; box-shadow:var(--shadow-sm); transform:none; }
+  .bu-card.disabled::before { display:none; }
+  .bu-icon { width:48px; height:48px; background:var(--tl-fail-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:16px; }
+  .bu-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:22px; text-transform:uppercase; margin-bottom:6px; }
+  .bu-desc { color:var(--tl-gray-500); font-size:14px; }
+  .bu-badge { display:inline-block; margin-top:12px; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+  .bu-badge.active { background:var(--tl-green-light); color:var(--tl-green); }
+  .bu-badge.soon { background:var(--tl-gray-100); color:var(--tl-gray-500); }
+
+  .product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+  .product-card { background:var(--tl-white); border:2px solid transparent; border-radius:var(--radius); padding:24px 20px; cursor:pointer; transition:all 0.25s; box-shadow:var(--shadow-sm); text-align:center; }
+  .product-card:hover { border-color:var(--tl-red); box-shadow:var(--shadow-lg); transform:translateY(-3px); }
+  .product-img { width:120px; height:90px; margin:0 auto 16px; background:var(--tl-gray-100); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--tl-gray-500); }
+  .product-img svg { width:60px; height:60px; }
+  .product-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; margin-bottom:4px; }
+  .product-pn { font-size:13px; color:var(--tl-gray-500); font-weight:500; }
+  .product-controls-count { margin-top:10px; font-size:12px; color:var(--tl-red); font-weight:600; }
+
+  .form-container { background:var(--tl-white); border-radius:var(--radius); box-shadow:var(--shadow-md); overflow:hidden; }
+  .form-header { background:var(--tl-black); padding:20px 28px; display:flex; align-items:center; }
+  .form-header-left { display:flex; align-items:center; gap:16px; }
+  .form-product-icon { width:44px; height:44px; background:var(--tl-red); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .form-product-name { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; color:var(--tl-white); text-transform:uppercase; }
+  .form-product-pn { font-size:13px; color:var(--tl-gray-500); }
+  .form-body { padding:28px; }
+  .form-section-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; color:var(--tl-gray-500); text-transform:uppercase; letter-spacing:2px; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid var(--tl-gray-100); }
+  .form-meta-grid { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:32px; }
+  .form-field { display:flex; flex-direction:column; gap:6px; }
+  .form-label { font-size:12px; font-weight:700; color:var(--tl-gray-500); text-transform:uppercase; letter-spacing:1px; }
+  .form-input,.form-select { padding:12px 14px; border:2px solid var(--tl-gray-100); border-radius:8px; font-family:'Barlow',sans-serif; font-size:15px; font-weight:500; color:var(--tl-black); background:var(--tl-white); outline:none; transition:border-color 0.2s; }
+  .form-input:focus,.form-select:focus { border-color:var(--tl-red); }
+  .form-textarea { padding:12px 14px; border:2px solid var(--tl-gray-100); border-radius:8px; font-family:'Barlow',sans-serif; font-size:15px; font-weight:500; color:var(--tl-black); background:var(--tl-white); outline:none; width:100%; min-height:80px; resize:vertical; transition:border-color 0.2s; }
+  .form-textarea:focus { border-color:var(--tl-red); }
+
+  .control-table { width:100%; border-collapse:collapse; }
+  .control-table thead th { text-align:left; font-size:11px; font-weight:700; color:var(--tl-gray-500); text-transform:uppercase; letter-spacing:1px; padding:10px 14px; border-bottom:2px solid var(--tl-gray-100); }
+  .control-table tbody tr { transition:background 0.15s; }
+  .control-table tbody tr:hover { background:var(--tl-gray-100); }
+  .control-table td { padding:12px 14px; border-bottom:1px solid var(--tl-gray-100); vertical-align:middle; font-size:14px; }
+  .control-name { font-weight:600; }
+  .control-spec { font-size:13px; color:var(--tl-gray-500); font-variant-numeric:tabular-nums; }
+  .control-input { width:120px; padding:10px 12px; border:2px solid var(--tl-gray-300); border-radius:8px; font-family:'Barlow',sans-serif; font-size:16px; font-weight:600; text-align:center; outline:none; transition:all 0.2s; font-variant-numeric:tabular-nums; }
+  .control-input:focus { border-color:var(--tl-red); box-shadow:0 0 0 3px rgba(204,32,39,0.1); }
+  .control-input.pass { border-color:var(--tl-green); background:var(--tl-green-light); }
+  .control-input.fail { border-color:var(--tl-fail); background:var(--tl-fail-light); }
+  .control-status { display:inline-flex; align-items:center; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700; text-transform:uppercase; min-width:70px; justify-content:center; }
+  .control-status.pass { background:var(--tl-green-light); color:var(--tl-green); }
+  .control-status.fail { background:var(--tl-fail-light); color:var(--tl-fail); }
+  .control-status.pending { background:var(--tl-gray-100); color:var(--tl-gray-500); }
+  .control-status.conditional { background:var(--tl-amber-light); color:var(--tl-amber); }
+
+  .var-buttons { display:flex; gap:8px; }
+  .var-btn { padding:10px 20px; border:2px solid var(--tl-gray-300); border-radius:8px; font-family:'Barlow',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; background:var(--tl-white); text-transform:uppercase; }
+  .var-btn.pass-btn:hover,.var-btn.pass-btn.selected { background:var(--tl-green); border-color:var(--tl-green); color:var(--tl-white); }
+  .var-btn.fail-btn:hover,.var-btn.fail-btn.selected { background:var(--tl-fail); border-color:var(--tl-fail); color:var(--tl-white); }
+
+  .form-actions { padding:24px 28px; border-top:2px solid var(--tl-gray-100); display:flex; justify-content:space-between; align-items:center; }
+  .btn-submit { background:var(--tl-red); color:var(--tl-white); border:none; padding:16px 48px; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:1.5px; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 15px rgba(204,32,39,0.3); }
+  .btn-submit:hover { background:var(--tl-red-dark); transform:translateY(-1px); }
+  .btn-back { background:none; border:2px solid var(--tl-gray-300); padding:14px 28px; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; cursor:pointer; transition:all 0.2s; color:var(--tl-gray-700); }
+  .btn-back:hover { border-color:var(--tl-black); color:var(--tl-black); }
+
+  /* NC PANEL */
+  .nc-panel { background:var(--tl-white); border:2px solid var(--tl-fail); border-radius:var(--radius); margin-top:24px; overflow:hidden; animation:fadeInUp 0.4s ease; }
+  .nc-header { background:linear-gradient(135deg,var(--tl-fail),var(--tl-red-dark)); padding:20px 28px; display:flex; align-items:center; gap:14px; }
+  .nc-header-icon { font-size:28px; }
+  .nc-header-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; color:var(--tl-white); text-transform:uppercase; }
+  .nc-header-sub { font-size:13px; color:rgba(255,255,255,0.7); }
+  .nc-body { padding:24px 28px; }
+  .nc-steps { display:flex; flex-direction:column; margin-bottom:24px; }
+  .nc-step { display:flex; gap:16px; padding:14px 0; }
+  .nc-step:not(:last-child) { border-bottom:1px dashed var(--tl-gray-300); }
+  .nc-step-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0; }
+  .nc-step-num.done { background:var(--tl-green); color:var(--tl-white); }
+  .nc-step-num.current { background:var(--tl-amber); color:var(--tl-white); animation:pulse 2s infinite; }
+  .nc-step-num.pending-step { background:var(--tl-gray-300); color:var(--tl-white); }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(230,148,10,0.4)} 50%{box-shadow:0 0 0 8px rgba(230,148,10,0)} }
+  .nc-step-title { font-weight:700; font-size:15px; margin-bottom:2px; }
+  .nc-step-desc { font-size:13px; color:var(--tl-gray-500); }
+  .nc-failed-list { background:var(--tl-fail-light); border-radius:8px; padding:14px 18px; margin-bottom:20px; }
+  .nc-failed-title { font-size:12px; font-weight:700; color:var(--tl-fail); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .nc-failed-item { font-size:14px; padding:4px 0; font-weight:500; }
+  .nc-confirm-box { background:var(--tl-amber-light); border:2px solid var(--tl-amber); border-radius:10px; padding:20px; margin-top:20px; }
+  .nc-confirm-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; color:var(--tl-amber); text-transform:uppercase; margin-bottom:12px; }
+  .nc-checkbox-row { display:flex; align-items:center; gap:12px; padding:10px 0; cursor:pointer; }
+  .nc-checkbox { width:24px; height:24px; border:2px solid var(--tl-amber); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; color:transparent; transition:all 0.2s; cursor:pointer; flex-shrink:0; }
+  .nc-checkbox.checked { background:var(--tl-amber); color:var(--tl-white); }
+  .nc-checkbox-label { font-size:14px; font-weight:500; }
+
+  /* TICKET */
+  .ticket { background:var(--tl-white); border:2px dashed var(--tl-gray-300); border-radius:16px; max-width:500px; margin:0 auto; overflow:hidden; }
+  .ticket-strip { height:8px; }
+  .ticket-strip.pass { background:var(--tl-green); }
+  .ticket-strip.conditional { background:var(--tl-amber); }
+  .ticket-body { padding:28px; text-align:center; }
+  .ticket-logo { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:16px; color:var(--tl-gray-500); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; }
+  .ticket-status { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:28px; text-transform:uppercase; margin-bottom:4px; }
+  .ticket-status.pass { color:var(--tl-green); }
+  .ticket-status.conditional { color:var(--tl-amber); }
+  .ticket-folio { font-size:13px; color:var(--tl-gray-500); margin-bottom:20px; }
+  .ticket-qr { width:140px; height:140px; margin:0 auto 20px; }
+  .ticket-details { text-align:left; border-top:1px solid var(--tl-gray-100); padding-top:16px; }
+  .ticket-row { display:flex; justify-content:space-between; padding:6px 0; font-size:13px; }
+  .ticket-row-label { color:var(--tl-gray-500); }
+  .ticket-row-value { font-weight:700; }
+  .ticket-condition { background:var(--tl-amber-light); border-radius:8px; padding:12px 16px; margin-top:16px; text-align:left; }
+  .ticket-condition-title { font-size:11px; font-weight:700; color:var(--tl-amber); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .ticket-condition-text { font-size:13px; font-weight:500; }
+  .ticket-footer { border-top:1px dashed var(--tl-gray-300); padding:14px 28px; text-align:center; font-size:11px; color:var(--tl-gray-500); }
+
+  .confirm-container { max-width:600px; margin:0 auto; text-align:center; }
+  .confirm-icon { width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:48px; }
+  .confirm-icon.pass { background:var(--tl-green-light); color:var(--tl-green); }
+  .confirm-icon.conditional { background:var(--tl-amber-light); color:var(--tl-amber); }
+  .confirm-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:36px; text-transform:uppercase; margin-bottom:8px; }
+  .confirm-title.pass { color:var(--tl-green); }
+  .confirm-title.conditional { color:var(--tl-amber); }
+  .confirm-subtitle { color:var(--tl-gray-500); font-size:16px; margin-bottom:32px; }
+  .btn-new { background:var(--tl-black); color:var(--tl-white); border:none; padding:16px 48px; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:1.5px; cursor:pointer; transition:all 0.2s; }
+  .btn-new:hover { background:var(--tl-gray-900); transform:translateY(-1px); }
+
+  /* DB OVERLAY */
+  .db-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:200; justify-content:center; align-items:flex-start; padding:40px 20px; overflow-y:auto; }
+  .db-overlay.active { display:flex; }
+  .db-panel { background:var(--tl-white); border-radius:16px; box-shadow:var(--shadow-xl); width:100%; max-width:1200px; overflow:hidden; animation:fadeInUp 0.3s ease; }
+  .db-header { background:var(--tl-black); padding:20px 28px; display:flex; align-items:center; justify-content:space-between; }
+  .db-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; color:var(--tl-white); text-transform:uppercase; }
+  .db-subtitle { font-size:13px; color:var(--tl-gray-500); }
+  .db-close { background:none; border:none; color:var(--tl-gray-500); font-size:28px; cursor:pointer; }
+  .db-close:hover { color:var(--tl-white); }
+  .db-tabs { display:flex; border-bottom:2px solid var(--tl-gray-100); padding:0 28px; gap:4px; }
+  .db-tab { padding:14px 20px; font-family:'Barlow',sans-serif; font-size:14px; font-weight:600; color:var(--tl-gray-500); background:none; border:none; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; text-transform:uppercase; }
+  .db-tab:hover { color:var(--tl-black); }
+  .db-tab.active { color:var(--tl-red); border-bottom-color:var(--tl-red); }
+  .db-content { padding:24px 28px; max-height:60vh; overflow-y:auto; }
+  .db-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .db-table thead th { text-align:left; font-size:11px; font-weight:700; color:var(--tl-gray-500); text-transform:uppercase; padding:10px 12px; border-bottom:2px solid var(--tl-gray-100); white-space:nowrap; position:sticky; top:0; background:var(--tl-white); }
+  .db-table tbody td { padding:10px 12px; border-bottom:1px solid var(--tl-gray-100); font-variant-numeric:tabular-nums; }
+  .db-table tbody tr:hover { background:var(--tl-gray-100); }
+  .db-empty { text-align:center; padding:60px 20px; color:var(--tl-gray-500); }
+  .db-empty-icon { font-size:48px; margin-bottom:16px; opacity:0.4; }
+  .db-empty-text { font-size:16px; font-weight:500; }
+  .db-count { font-size:12px; color:var(--tl-gray-500); padding:12px 28px; border-top:1px solid var(--tl-gray-100); text-align:right; }
+
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .animate-in { animation:fadeInUp 0.4s ease forwards; }
+  .screen { display:none; }
+  .screen.active { display:block; }
+
+  @media(max-width:768px){
+    .header{padding:0 16px} .main{padding:20px 16px 80px}
+    .form-meta-grid{grid-template-columns:1fr 1fr} .product-grid{grid-template-columns:repeat(2,1fr)}
+    .steps-container{overflow-x:auto;justify-content:flex-start;padding:12px 16px} .step-label{display:none}
+    .screen-title{font-size:24px} .control-input{width:90px}
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><div class="logo-mark">TL</div><div><div class="header-title">Quality Control Kiosk</div><div class="header-subtitle">Inspection System</div></div></div>
+  <div class="header-right"><div class="header-badge">CHL</div><button class="db-tab-btn" id="dbTabBtn" onclick="toggleDBView()">📊 Base de Datos</button><div class="header-time" id="clock">--:--:--</div></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+<div class="steps-container">
+  <div class="step-item active" id="step1"><div class="step-number">1</div><div class="step-label">Unidad de Negocio</div></div><div class="step-arrow">›</div>
+  <div class="step-item pending" id="step2"><div class="step-number">2</div><div class="step-label">Producto</div></div><div class="step-arrow">›</div>
+  <div class="step-item pending" id="step3"><div class="step-number">3</div><div class="step-label">Inspección</div></div><div class="step-arrow">›</div>
+  <div class="step-item pending" id="step4"><div class="step-number">4</div><div class="step-label">Resultado</div></div>
+</div>
+<div class="main">
+  <div class="screen active" id="screen1">
+    <div class="screen-title animate-in">Selecciona Unidad de Negocio</div>
+    <div class="screen-desc animate-in">Elige la unidad de negocio para esta inspección</div>
+    <div class="bu-grid">
+      <div class="bu-card animate-in" onclick="selectBU('CHL')"><div class="bu-icon">💡</div><div class="bu-name">CHL</div><div class="bu-desc">Commercial Headlamp Lighting</div><div class="bu-badge active">Activo — 5 productos</div></div>
+      <div class="bu-card disabled animate-in"><div class="bu-icon">🔧</div><div class="bu-name">RIGID</div><div class="bu-desc">Rigid Industries</div><div class="bu-badge soon">Próximamente</div></div>
+    </div>
+  </div>
+  <div class="screen" id="screen2">
+    <div class="screen-title">Selecciona Producto</div><div class="screen-desc">CHL — Commercial Headlamp Lighting</div>
+    <div class="product-grid" id="productGrid"></div>
+    <div style="margin-top:24px"><button class="btn-back" onclick="goToScreen(1)">‹ Cambiar Unidad</button></div>
+  </div>
+  <div class="screen" id="screen3"><div id="formContainer"></div></div>
+  <div class="screen" id="screen4"><div class="confirm-container" id="confirmContainer"></div></div>
+</div>
+<div class="db-overlay" id="dbOverlay" onclick="if(event.target===this)toggleDBView()">
+  <div class="db-panel">
+    <div class="db-header"><div><div class="db-title">📊 Base de Datos — Inspecciones</div><div class="db-subtitle">Registros almacenados en el sistema</div></div><button class="db-close" onclick="toggleDBView()">×</button></div>
+    <div class="db-tabs"><button class="db-tab active" onclick="switchDBTab('inspections',this)">Inspecciones</button><button class="db-tab" onclick="switchDBTab('results',this)">Resultados Detalle</button><button class="db-tab" onclick="switchDBTab('products',this)">Productos</button><button class="db-tab" onclick="switchDBTab('controls',this)">Controles</button></div>
+    <div class="db-content" id="dbContent"></div><div class="db-count" id="dbCount"></div>
+  </div>
+</div>
+
+<script>
+const products=[
+  {id:1,name:"Headlamp 920L",pn:"TL-920-L",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:149.5,usl:150.5,target:150.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:89.0,usl:91.0,target:90.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:3.8,usl:4.2,target:4.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
+  {id:2,name:"Headlamp 920R",pn:"TL-920-R",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:149.5,usl:150.5,target:150.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:89.0,usl:91.0,target:90.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:3.8,usl:4.2,target:4.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
+  {id:3,name:"Headlamp 120L",pn:"TL-120-L",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:119.5,usl:120.5,target:120.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:74.0,usl:76.0,target:75.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:2.8,usl:3.2,target:3.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
+  {id:4,name:"Headlamp 120R",pn:"TL-120-R",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:119.5,usl:120.5,target:120.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:74.0,usl:76.0,target:75.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:2.8,usl:3.2,target:3.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
+  {id:5,name:"Headlamp 800",pn:"TL-800-C",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:179.0,usl:181.0,target:180.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:109.0,usl:111.0,target:110.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:4.5,usl:5.5,target:5.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:3.0,usl:4.0,target:3.5},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
+];
+
+let currentScreen=1,selectedBU=null,selectedProduct=null,controlValues={};
+const db_inspections=[],db_results=[];
+let inspId=1,resId=1;
+
+function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
+
+function goToScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen'+n).classList.add('active');currentScreen=n;
+  for(let i=1;i<=4;i++){const s=document.getElementById('step'+i);s.className='step-item '+(i<n?'completed':i===n?'active':'pending');s.querySelector('.step-number').textContent=i<n?'✓':i;}
+  document.getElementById('progressFill').style.width=(n*25)+'%';
+}
+function selectBU(bu){selectedBU=bu;document.querySelector('.header-badge').textContent=bu;renderProducts(bu);goToScreen(2);}
+function renderProducts(bu){
+  document.getElementById('productGrid').innerHTML=products.filter(p=>p.bu===bu).map(p=>`
+    <div class="product-card animate-in" onclick="selectProduct(${p.id})"><div class="product-img"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="32" rx="26" ry="20" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.3"/></svg></div>
+    <div class="product-name">${p.name}</div><div class="product-pn">${p.pn}</div><div class="product-controls-count">${p.controls.length} controles</div></div>`).join('');
+}
+function selectProduct(id){selectedProduct=products.find(p=>p.id===id);controlValues={};renderForm();goToScreen(3);}
+
+function renderForm(){
+  const p=selectedProduct,nc=p.controls.filter(c=>c.type==='numeric'),vc=p.controls.filter(c=>c.type==='variable');
+  document.getElementById('formContainer').innerHTML=`<div class="form-container">
+    <div class="form-header"><div class="form-header-left"><div class="form-product-icon">💡</div><div><div class="form-product-name">${p.name}</div><div class="form-product-pn">${p.pn}</div></div></div></div>
+    <div class="form-body">
+      <div class="form-section-title">Información General</div>
+      <div class="form-meta-grid">
+        <div class="form-field"><label class="form-label">No. Operador</label><input class="form-input" type="text" id="numOperador" placeholder="Ej: OP-001"></div>
+        <div class="form-field"><label class="form-label">Nombre Operador</label><input class="form-input" type="text" id="operador" placeholder="Nombre completo"></div>
+        <div class="form-field"><label class="form-label">Turno</label><select class="form-select" id="turno"><option value="">Seleccionar...</option><option value="1">Turno 1 (6:00-14:00)</option><option value="2">Turno 2 (14:00-22:00)</option><option value="3">Turno 3 (22:00-6:00)</option></select></div>
+        <div class="form-field"><label class="form-label">Lote / Serial</label><input class="form-input" type="text" id="lote" placeholder="Número de lote"></div>
+      </div>
+      ${nc.length?`<div class="form-section-title">Controles Numéricos</div><table class="control-table"><thead><tr><th>Control</th><th>Especificación</th><th>Target</th><th>Valor Medido</th><th>Status</th></tr></thead><tbody>${nc.map(c=>`<tr><td class="control-name">${c.name}</td><td class="control-spec">${c.lsl} — ${c.usl} ${c.unit}</td><td class="control-spec" style="font-weight:600;color:var(--tl-black)">${c.target} ${c.unit}</td><td><input class="control-input" type="number" step="0.1" id="ctrl_${c.id}" placeholder="${c.target}" oninput="validateNum(${c.id},${c.lsl},${c.usl})"></td><td><span class="control-status pending" id="st_${c.id}">—</span></td></tr>`).join('')}</tbody></table>`:''}
+      ${vc.length?`<div class="form-section-title" style="margin-top:28px">Controles Variables</div><table class="control-table"><thead><tr><th>Control</th><th>Resultado</th><th>Status</th></tr></thead><tbody>${vc.map(c=>`<tr><td class="control-name">${c.name}</td><td><div class="var-buttons"><button class="var-btn pass-btn" id="pb_${c.id}" onclick="setVar(${c.id},'PASS')">✓ Pass</button><button class="var-btn fail-btn" id="fb_${c.id}" onclick="setVar(${c.id},'FAIL')">✕ Fail</button></div></td><td><span class="control-status pending" id="st_${c.id}">—</span></td></tr>`).join('')}</tbody></table>`:''}
+      <div id="ncFlowArea"></div>
+    </div>
+    <div class="form-actions"><button class="btn-back" onclick="goToScreen(2)">‹ Cambiar Producto</button><button class="btn-submit" id="submitBtn" onclick="submit()">Registrar Inspección ›</button></div>
+  </div>`;
+}
+
+function validateNum(cid,lsl,usl){
+  const inp=document.getElementById('ctrl_'+cid),st=document.getElementById('st_'+cid),v=parseFloat(inp.value);
+  if(isNaN(v)||inp.value===''){inp.className='control-input';st.className='control-status pending';st.textContent='—';delete controlValues[cid];checkFails();return;}
+  if(v>=lsl&&v<=usl){inp.className='control-input pass';st.className='control-status pass';st.textContent='✓ PASS';controlValues[cid]={value:v,result:'PASS'};}
+  else{inp.className='control-input fail';st.className='control-status fail';st.textContent='✕ FAIL';controlValues[cid]={value:v,result:'FAIL'};}
+  checkFails();
+}
+function setVar(cid,res){
+  const st=document.getElementById('st_'+cid),pb=document.getElementById('pb_'+cid),fb=document.getElementById('fb_'+cid);
+  pb.classList.remove('selected');fb.classList.remove('selected');
+  if(res==='PASS'){pb.classList.add('selected');st.className='control-status pass';st.textContent='✓ PASS';}
+  else{fb.classList.add('selected');st.className='control-status fail';st.textContent='✕ FAIL';}
+  controlValues[cid]={value:res,result:res};checkFails();
+}
+
+function checkFails(){
+  const area=document.getElementById('ncFlowArea'),btn=document.getElementById('submitBtn');
+  const fails=selectedProduct.controls.filter(c=>controlValues[c.id]&&controlValues[c.id].result==='FAIL');
+  if(!fails.length){area.innerHTML='';btn.textContent='Registrar Inspección ›';btn.style.background='';return;}
+  area.innerHTML=`<div class="nc-panel">
+    <div class="nc-header"><div class="nc-header-icon">⚠️</div><div><div class="nc-header-title">Producto No Conforme Detectado</div><div class="nc-header-sub">Se requiere seguir el proceso de control de producto no conforme</div></div></div>
+    <div class="nc-body">
+      <div class="nc-failed-list"><div class="nc-failed-title">Controles fuera de especificación (${fails.length})</div>
+        ${fails.map(f=>{const cv=controlValues[f.id];const d=f.type==='numeric'?`Valor: ${cv.value} ${f.unit} | Spec: ${f.lsl}–${f.usl} ${f.unit}`:'Resultado: FAIL';return `<div class="nc-failed-item">✕ ${f.name} — <span style="color:var(--tl-gray-500);font-size:12px">${d}</span></div>`;}).join('')}
+      </div>
+      <div class="form-section-title" style="margin-top:0">Proceso de Control de Producto No Conforme</div>
+      <div class="nc-steps">
+        <div class="nc-step"><div class="nc-step-num done">1</div><div><div class="nc-step-title">Identificar</div><div class="nc-step-desc">El sistema ha identificado automáticamente ${fails.length} control(es) fuera de especificación.</div></div></div>
+        <div class="nc-step"><div class="nc-step-num done">2</div><div><div class="nc-step-title">Segregar</div><div class="nc-step-desc">Separe la pieza del flujo de producción. Coloque etiqueta roja de material no conforme.</div></div></div>
+        <div class="nc-step"><div class="nc-step-num current">3</div><div><div class="nc-step-title">Contener</div><div class="nc-step-desc">Solicite soporte del auditor de calidad. Documente la acción de contención abajo.</div></div></div>
+        <div class="nc-step"><div class="nc-step-num pending-step">4</div><div><div class="nc-step-title">Analizar</div><div class="nc-step-desc">El equipo de calidad determinará causa raíz (8D, Ishikawa, 5 Why).</div></div></div>
+        <div class="nc-step"><div class="nc-step-num pending-step">5</div><div><div class="nc-step-title">Disponer</div><div class="nc-step-desc">Decisión final: rework, scrap, concesión o uso como está (MRB).</div></div></div>
+      </div>
+      <div class="form-section-title">Acción de Contención</div>
+      <div class="form-field" style="margin-bottom:16px"><label class="form-label">Describa la acción de contención a ejecutar</label>
+        <textarea class="form-textarea" id="contencion" placeholder="Ej: Se segregó el lote completo. Se realizará re-inspección 100% del lote con calibrador verificado. Se notificó al supervisor de línea."></textarea></div>
+      <div class="nc-confirm-box">
+        <div class="nc-confirm-title">⚠️ Confirmación de Auditor de Calidad</div>
+        <div class="nc-checkbox-row" onclick="toggleChk('chk1')"><div class="nc-checkbox" id="chk1">✓</div><div class="nc-checkbox-label">Solicité soporte al auditor de calidad y revisamos la pieza juntos</div></div>
+        <div class="nc-checkbox-row" onclick="toggleChk('chk2')"><div class="nc-checkbox" id="chk2">✓</div><div class="nc-checkbox-label">El auditor de calidad autorizó la liberación condicionada</div></div>
+        <div class="nc-checkbox-row" onclick="toggleChk('chk3')"><div class="nc-checkbox" id="chk3">✓</div><div class="nc-checkbox-label">Me comprometo a ejecutar la acción de contención registrada</div></div>
+        <p style="font-size:12px;color:var(--tl-gray-500);margin-top:8px">📱 En futuras versiones, el auditor escaneará su QR de identificación para validar digitalmente.</p>
+      </div>
+    </div></div>`;
+  btn.textContent='Registrar Liberación Condicionada ›';btn.style.background='var(--tl-amber)';
+}
+function toggleChk(id){document.getElementById(id).classList.toggle('checked');}
+
+function genFolio(){const d=new Date(),r=Math.random().toString(36).substring(2,8).toUpperCase();return `TL-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${r}`;}
+
+function genQR(text){
+  const sz=140,cells=21,cs=sz/cells;let rects='',seed=0;
+  for(let i=0;i<text.length;i++)seed=(seed*31+text.charCodeAt(i))&0xFFFFFFFF;
+  function next(){seed=(seed*1103515245+12345)&0x7FFFFFFF;return seed;}
+  for(let r=0;r<7;r++)for(let c=0;c<7;c++){
+    const on=r===0||r===6||c===0||c===6||(r>=2&&r<=4&&c>=2&&c<=4);
+    if(on){rects+=`<rect x="${c*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="#1A1A1A"/>`;rects+=`<rect x="${(c+cells-7)*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="#1A1A1A"/>`;rects+=`<rect x="${c*cs}" y="${(r+cells-7)*cs}" width="${cs}" height="${cs}" fill="#1A1A1A"/>`;}
+  }
+  for(let r=8;r<cells-8;r++)for(let c=8;c<cells;c++){if(next()%3===0)rects+=`<rect x="${c*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="#1A1A1A"/>`;}
+  for(let r=0;r<cells;r++)for(let c=8;c<cells-8;c++){if(r<8||r>=cells-8)continue;if(next()%3===0)rects+=`<rect x="${c*cs}" y="${r*cs}" width="${cs}" height="${cs}" fill="#1A1A1A"/>`;}
+  return `<svg viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}" xmlns="http://www.w3.org/2000/svg"><rect width="${sz}" height="${sz}" fill="white"/>${rects}</svg>`;
+}
+
+function submit(){
+  const numOp=document.getElementById('numOperador').value,op=document.getElementById('operador').value,turno=document.getElementById('turno').value,lote=document.getElementById('lote').value;
+  if(!numOp||!op||!turno){alert('Completa No. Operador, Nombre y Turno');return;}
+  const total=selectedProduct.controls.length,filled=Object.keys(controlValues).length;
+  if(filled<total){alert(`Faltan ${total-filled} controles`);return;}
+  const hasFail=Object.values(controlValues).some(v=>v.result==='FAIL');
+  const contEl=document.getElementById('contencion'),contencion=contEl?contEl.value:'';
+  if(hasFail){
+    const c1=document.getElementById('chk1')?.classList.contains('checked'),c2=document.getElementById('chk2')?.classList.contains('checked'),c3=document.getElementById('chk3')?.classList.contains('checked');
+    if(!c1||!c2||!c3){alert('Confirme las 3 casillas del auditor');return;}
+    if(!contencion.trim()){alert('Registre la acción de contención');return;}
+  }
+  const result=hasFail?'CONDITIONAL':'PASS',now=new Date(),folio=genFolio(),iid=inspId++;
+  const pc=Object.values(controlValues).filter(v=>v.result==='PASS').length,fc=Object.values(controlValues).filter(v=>v.result==='FAIL').length;
+  db_inspections.push({id:iid,bu:selectedBU,product:selectedProduct.name,pn:selectedProduct.pn,num_operador:numOp,operador:op,turno:parseInt(turno),lote:lote||'N/A',fecha:now.toLocaleDateString('es-MX'),hora:now.toLocaleTimeString('es-MX'),resultado:result,folio,contencion:contencion||null,pass_count:pc,fail_count:fc});
+  selectedProduct.controls.forEach(c=>{const cv=controlValues[c.id];db_results.push({id:resId++,inspection_id:iid,control_name:c.name,control_type:c.type,spec:c.type==='numeric'?`${c.lsl}–${c.usl} ${c.unit}`:'Variable',valor:cv.value,resultado:cv.result});});
+  renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc);goToScreen(4);
+}
+
+function renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc){
+  const now=new Date(),isCond=result==='CONDITIONAL',cls=isCond?'conditional':'pass',label=isCond?'Liberación Condicionada':'Inspección Aprobada',icon=isCond?'⚠️':'✓';
+  document.getElementById('confirmContainer').innerHTML=`
+    <div class="confirm-icon ${cls}">${icon}</div>
+    <div class="confirm-title ${cls}">${label}</div>
+    <div class="confirm-subtitle">Registro #${db_inspections.length} guardado exitosamente</div>
+    <div class="ticket" style="margin-bottom:28px">
+      <div class="ticket-strip ${cls}"></div>
+      <div class="ticket-body">
+        <div class="ticket-logo">Truck-Lite — Quality Control</div>
+        <div class="ticket-status ${cls}">${isCond?'Liberación Condicionada':'Aprobado'}</div>
+        <div class="ticket-folio">Folio: ${folio}</div>
+        <div class="ticket-qr">${genQR(folio)}</div>
+        <div class="ticket-details">
+          <div class="ticket-row"><span class="ticket-row-label">Producto</span><span class="ticket-row-value">${selectedProduct.name} (${selectedProduct.pn})</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">BU</span><span class="ticket-row-value">${selectedBU}</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">Operador</span><span class="ticket-row-value">${numOp} — ${op}</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">Turno</span><span class="ticket-row-value">Turno ${turno}</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">Lote</span><span class="ticket-row-value">${lote||'N/A'}</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">Fecha / Hora</span><span class="ticket-row-value">${now.toLocaleDateString('es-MX')} ${now.toLocaleTimeString('es-MX')}</span></div>
+          <div class="ticket-row"><span class="ticket-row-label">Controles</span><span class="ticket-row-value"><span style="color:var(--tl-green)">${pc} OK</span>${fc>0?' / <span style="color:var(--tl-fail)">'+fc+' FAIL</span>':''}</span></div>
+        </div>
+        ${isCond?`<div class="ticket-condition"><div class="ticket-condition-title">Condición de Liberación</div><div class="ticket-condition-text">${contencion}</div></div>`:''}
+      </div>
+      <div class="ticket-footer">Este ticket será imprimible en versiones futuras · QR escaneable para trazabilidad</div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-new" onclick="newInsp()">Nueva Inspección ›</button>
+      <button class="btn-back" onclick="toggleDBView()" style="border-color:var(--tl-gray-500)">📊 Ver Base de Datos</button>
+    </div>`;
+}
+function newInsp(){controlValues={};goToScreen(1);}
+
+function toggleDBView(){const o=document.getElementById('dbOverlay'),b=document.getElementById('dbTabBtn');o.classList.toggle('active');b.classList.toggle('active');if(o.classList.contains('active'))switchDBTab('inspections',document.querySelector('.db-tab'));}
+function switchDBTab(tab,el){
+  document.querySelectorAll('.db-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  const ct=document.getElementById('dbContent'),cn=document.getElementById('dbCount');
+  if(tab==='inspections'){
+    if(!db_inspections.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">📋</div><div class="db-empty-text">No hay inspecciones registradas aún.</div></div>';cn.textContent='0 registros';return;}
+    ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Folio</th><th>Fecha</th><th>Hora</th><th>BU</th><th>Producto</th><th>No.Op</th><th>Operador</th><th>T</th><th>Lote</th><th>OK</th><th>Fail</th><th>Resultado</th><th>Contención</th></tr></thead><tbody>
+    ${db_inspections.map(r=>`<tr><td style="font-weight:700">${r.id}</td><td style="font-size:10px">${r.folio}</td><td>${r.fecha}</td><td>${r.hora}</td><td>${r.bu}</td><td style="font-weight:600">${r.product}</td><td>${r.num_operador}</td><td>${r.operador}</td><td>T${r.turno}</td><td>${r.lote}</td><td style="color:var(--tl-green);font-weight:700">${r.pass_count}</td><td style="color:${r.fail_count?'var(--tl-fail)':'var(--tl-gray-500)'};font-weight:700">${r.fail_count}</td><td><span class="control-status ${r.resultado.toLowerCase()}">${r.resultado==='CONDITIONAL'?'COND.':r.resultado}</span></td><td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${r.contencion||'—'}</td></tr>`).join('')}</tbody></table>`;
+    cn.textContent=`${db_inspections.length} registro(s) en tabla inspections`;
+  } else if(tab==='results'){
+    if(!db_results.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">🔍</div><div class="db-empty-text">No hay resultados aún.</div></div>';cn.textContent='0 registros';return;}
+    ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Insp.ID</th><th>Control</th><th>Tipo</th><th>Spec</th><th>Valor</th><th>Resultado</th></tr></thead><tbody>
+    ${db_results.map(r=>`<tr><td style="font-weight:700">${r.id}</td><td>${r.inspection_id}</td><td style="font-weight:600">${r.control_name}</td><td>${r.control_type}</td><td style="color:var(--tl-gray-500)">${r.spec}</td><td style="font-weight:600">${r.valor}</td><td><span class="control-status ${r.resultado.toLowerCase()}">${r.resultado}</span></td></tr>`).join('')}</tbody></table>`;
+    cn.textContent=`${db_results.length} registro(s) en tabla inspection_results`;
+  } else if(tab==='products'){
+    ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Producto</th><th>P/N</th><th>BU</th><th>Controles</th></tr></thead><tbody>${products.map(p=>`<tr><td style="font-weight:700">${p.id}</td><td style="font-weight:600">${p.name}</td><td>${p.pn}</td><td>${p.bu}</td><td>${p.controls.length}</td></tr>`).join('')}</tbody></table>`;
+    cn.textContent=`${products.length} registro(s)`;
+  } else if(tab==='controls'){
+    const all=[];products.forEach(p=>p.controls.forEach(c=>all.push({...c,product:p.name})));
+    ct.innerHTML=`<table class="db-table"><thead><tr><th>Producto</th><th>Control</th><th>Tipo</th><th>Unidad</th><th>LSL</th><th>Target</th><th>USL</th></tr></thead><tbody>${all.map(c=>`<tr><td style="font-weight:600">${c.product}</td><td>${c.name}</td><td>${c.type}</td><td>${c.unit||'—'}</td><td>${c.lsl!=null?c.lsl:'—'}</td><td style="font-weight:600">${c.target!=null?c.target:'—'}</td><td>${c.usl!=null?c.usl:'—'}</td></tr>`).join('')}</tbody></table>`;
+    cn.textContent=`${all.length} registro(s)`;
+  }
+}
+</script>
+</body>
+</html>
