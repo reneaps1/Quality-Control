@@ -109,6 +109,68 @@
   .gr-item-action{font-size:13px;color:var(--tl-gray-700);margin-top:6px;padding:8px 12px;background:var(--tl-gray-100);border-radius:6px;font-style:italic;}
   .gr-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
   @media(max-width:768px){.gr-grid{grid-template-columns:1fr}.gr-kpi-row{grid-template-columns:1fr 1fr}}
+  .gr-item.clickable{cursor:pointer;}
+  .gr-item.clickable:hover{background:var(--tl-teal-light);}
+  .gr-item-click-hint{font-size:11px;color:var(--tl-teal);font-weight:600;margin-top:4px;}
+  /* ── REPORTE MODAL ── */
+  .rpt-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:300;justify-content:center;align-items:flex-start;padding:24px 16px;overflow-y:auto;}
+  .rpt-overlay.active{display:flex;}
+  .rpt-panel{background:var(--tl-white);border-radius:16px;width:100%;max-width:960px;overflow:hidden;animation:fadeInUp 0.3s ease;box-shadow:var(--shadow-xl);}
+  .rpt-topbar{background:var(--tl-black);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .rpt-topbar-left{display:flex;align-items:center;gap:16px;}
+  .rpt-id{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;color:var(--tl-white);text-transform:uppercase;letter-spacing:1px;}
+  .rpt-folio{font-size:12px;color:var(--tl-gray-500);}
+  .rpt-close{background:none;border:none;color:var(--tl-gray-500);font-size:28px;cursor:pointer;line-height:1;}
+  .rpt-close:hover{color:var(--tl-white);}
+  .rpt-body{padding:28px;}
+  /* Section */
+  .rpt-section{margin-bottom:24px;}
+  .rpt-section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:2px;padding-bottom:8px;border-bottom:2px solid var(--tl-gray-100);margin-bottom:14px;}
+  /* Info grid */
+  .rpt-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .rpt-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .rpt-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .rpt-field{display:flex;flex-direction:column;gap:3px;}
+  .rpt-label{font-size:10px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;}
+  .rpt-value{font-size:14px;font-weight:600;color:var(--tl-black);}
+  /* Summary boxes */
+  .rpt-summary-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:4px;}
+  .rpt-sum-box{background:var(--tl-gray-100);border-radius:10px;padding:14px;text-align:center;}
+  .rpt-sum-box.ok{background:var(--tl-green-light);}
+  .rpt-sum-box.nok{background:var(--tl-fail-light);}
+  .rpt-sum-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;line-height:1;}
+  .rpt-sum-box.ok .rpt-sum-val{color:var(--tl-green);}
+  .rpt-sum-box.nok .rpt-sum-val{color:var(--tl-fail);}
+  .rpt-sum-lbl{font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;margin-top:4px;}
+  /* Sample table */
+  .rpt-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .rpt-table thead th{background:var(--tl-black);color:var(--tl-white);text-align:center;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+  .rpt-table thead th:first-child{text-align:left;}
+  .rpt-table tbody td{padding:8px 10px;border-bottom:1px solid var(--tl-gray-100);text-align:center;font-variant-numeric:tabular-nums;}
+  .rpt-table tbody td:first-child{text-align:left;font-weight:700;}
+  .rpt-table tbody tr:hover{background:var(--tl-gray-100);}
+  .rpt-cell-ok{color:var(--tl-green);font-weight:700;}
+  .rpt-cell-nok{color:var(--tl-fail);font-weight:700;background:var(--tl-fail-light);}
+  .rpt-row-ok td:first-child{border-left:3px solid var(--tl-green);}
+  .rpt-row-nok td:first-child{border-left:3px solid var(--tl-fail);}
+  /* 8D steps */
+  .d8-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .d8-step{border-radius:10px;padding:12px;border:2px solid var(--tl-gray-100);}
+  .d8-step.done{border-color:var(--tl-green);background:var(--tl-green-light);}
+  .d8-step.pending{border-color:var(--tl-gray-300);background:var(--tl-gray-100);opacity:0.6;}
+  .d8-label{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;margin-bottom:2px;}
+  .d8-step.done .d8-label{color:var(--tl-green);}
+  .d8-step.pending .d8-label{color:var(--tl-gray-500);}
+  .d8-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+  .d8-desc{font-size:11px;color:var(--tl-gray-700);}
+  /* Footer */
+  .rpt-footer{background:var(--tl-gray-100);padding:16px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .rpt-sign-row{display:flex;gap:32px;}
+  .rpt-sign{text-align:center;}
+  .rpt-sign-line{width:140px;height:1px;background:var(--tl-gray-300);margin:0 auto 4px;}
+  .rpt-sign-name{font-size:12px;font-weight:700;}
+  .rpt-sign-role{font-size:10px;color:var(--tl-gray-500);text-transform:uppercase;}
+  @media(max-width:768px){.rpt-grid-4{grid-template-columns:1fr 1fr}.rpt-summary-row{grid-template-columns:repeat(3,1fr)}.d8-grid{grid-template-columns:1fr 1fr}.rpt-grid-3{grid-template-columns:1fr 1fr}}
   .module-card-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;text-transform:uppercase;margin-bottom:6px;}
   .module-card-desc{color:var(--tl-gray-500);font-size:14px;line-height:1.5;}
   .module-card-badge{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
@@ -560,6 +622,11 @@
 
 </div><!-- /main -->
 
+<!-- ── REPORTE DE CONTENCIÓN MODAL ── -->
+<div class="rpt-overlay" id="rptOverlay" onclick="if(event.target===this)closeContencionReport()">
+  <div class="rpt-panel" id="rptPanel"></div>
+</div>
+
 <!-- ── DB OVERLAY ── -->
 <div class="db-overlay" id="dbOverlay" onclick="if(event.target===this)toggleDBView()">
   <div class="db-panel">
@@ -609,10 +676,139 @@ const demo_alertas=[
   {id:'ALT-004',titulo:'Sellado deficiente — prueba de agua',severidad:'mayor',status:'cerrada',producto:'Headlamp 120R',lote:'L-2026-038',fecha:'12/04/2026',responsable:'QA-01 / P. Ruiz',descripcion:'Falla de sellado en junta perimetral. Proveedor notificado. Lote devuelto. CERRADA.'},
 ];
 const demo_contenciones=[
-  {id:'CNT-001',folio:'TL-20260414-G7H8I9',producto:'Headlamp 120L',lote:'L-2026-042',accion:'Se segregó pieza del flujo. Reajuste de torquímetro OP-03. Re-inspección 100% del lote en proceso.',responsable:'QA-05',dias:1,status:'activa'},
-  {id:'CNT-002',folio:'TL-20260414-P7Q8R9',producto:'Headlamp 120R',lote:'L-2026-044',accion:'Lote completo en cuarentena área Q2. Análisis 8D iniciado. Supervisor de turno notificado.',responsable:'QA-02',dias:1,status:'activa'},
-  {id:'CNT-003',folio:'TL-20260414-D4E5F6',producto:'Headlamp 800',lote:'L-2026-046',accion:'Revisión de proceso de manejo en estación 5. Capacitación programada para operadores T3.',responsable:'QA-07',dias:1,status:'revision'},
-  {id:'CNT-004',folio:'TL-20260412-Z9Y8X7',producto:'Headlamp 120R',lote:'L-2026-038',accion:'Junta perimetral reemplazada. Prueba de agua superada al 100%. Lote liberado.',responsable:'QA-01',dias:3,status:'cerrada'},
+  {
+    id:'CNT-001',folio:'TL-20260414-G7H8I9',status:'activa',dias:1,
+    fecha_apertura:'14/04/2026',hora_apertura:'07:10',fecha_objetivo:'17/04/2026',fecha_cierre:null,
+    numero_parte:'TL-120-L',producto:'Headlamp 120L',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 3',turno:1,
+    lote:'L-2026-042',cantidad_producida:48,cantidad_inspeccionada:48,cantidad_ok:41,cantidad_nok:7,
+    tipo_defecto:'Dimensional',defecto:'Torque de tornillos fuera de especificación (LSL: 2.5 Nm)',
+    causa_raiz:'Torquímetro OP-03 descalibrado. Desviación detectada: ±0.8 Nm vs valor real.',
+    accion:'Se segregó pieza del flujo. Reajuste de torquímetro OP-03. Re-inspección 100% del lote en proceso.',
+    accion_correctiva:'Calibración del torquímetro OP-03 y OP-04. Verificación de equipos en línea.',
+    inspector:'Carlos Vega',num_inspector:'OP-003',responsable:'QA-05',auditor:'Ing. Martínez',
+    comentarios:'Se notificó a supervisión. Lote en cuarentena área Q1. Análisis de causa raíz en proceso.',
+    d8:[
+      {d:'D1',titulo:'Equipo de Respuesta',desc:'Equipo formado: QA-05, OP-003, Supervisor T1',done:true},
+      {d:'D2',titulo:'Descripción del Problema',desc:'Torque fuera de spec en 7 de 48 piezas. Torquímetro OP-03 descalibrado.',done:true},
+      {d:'D3',titulo:'Acción de Contención',desc:'Segregación de lote. Re-inspección 100%. Torquímetro reemplazado.',done:true},
+      {d:'D4',titulo:'Causa Raíz',desc:'Torquímetro OP-03 sin calibración desde 3 meses. Causa: falla en sistema de recordatorio.',done:false},
+      {d:'D5',titulo:'Acción Correctiva',desc:'Pendiente de definición.',done:false},
+      {d:'D6',titulo:'Implementación',desc:'—',done:false},
+      {d:'D7',titulo:'Verificación',desc:'—',done:false},
+      {d:'D8',titulo:'Cierre y Reconocimiento',desc:'—',done:false},
+    ],
+    columnas:['Diám. Lente (mm)','Ancho Housing (mm)','Amperaje (A)','Torque (Nm)','Cosmética','Sellado','LED'],
+    specs:[{lsl:119.5,usl:120.5},{lsl:74.0,usl:76.0},{lsl:2.8,usl:3.2},{lsl:2.5,usl:3.5},null,null,null],
+    muestras:[
+      {pieza:1,vals:[120.1,75.2,3.0,3.1,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:2,vals:[119.9,74.8,2.9,2.3,'PASS','PASS','PASS'],resultado:'NOK'},
+      {pieza:3,vals:[120.2,75.0,3.1,3.3,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:4,vals:[120.0,75.1,2.9,2.2,'PASS','PASS','PASS'],resultado:'NOK'},
+      {pieza:5,vals:[119.8,74.9,3.0,3.0,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:6,vals:[120.1,75.3,3.1,2.4,'FAIL','PASS','PASS'],resultado:'NOK'},
+      {pieza:7,vals:[120.0,75.0,3.0,3.2,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:8,vals:[119.9,74.7,2.8,2.1,'PASS','PASS','PASS'],resultado:'NOK'},
+      {pieza:9,vals:[120.3,75.1,3.1,3.4,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:10,vals:[120.0,75.2,3.0,2.3,'PASS','PASS','PASS'],resultado:'NOK'},
+    ],
+  },
+  {
+    id:'CNT-002',folio:'TL-20260414-P7Q8R9',status:'activa',dias:1,
+    fecha_apertura:'14/04/2026',hora_apertura:'14:55',fecha_objetivo:'18/04/2026',fecha_cierre:null,
+    numero_parte:'TL-120-R',producto:'Headlamp 120R',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 2',turno:2,
+    lote:'L-2026-044',cantidad_producida:36,cantidad_inspeccionada:36,cantidad_ok:34,cantidad_nok:2,
+    tipo_defecto:'Dimensional / Funcional',defecto:'Diámetro de lente y amperaje fuera de especificación',
+    causa_raiz:'En análisis. Posible variación en proveedor de lentes y ajuste de fuente de poder.',
+    accion:'Lote completo en cuarentena área Q2. Análisis 8D iniciado. Supervisor de turno notificado.',
+    accion_correctiva:'Pendiente de definición tras análisis 8D.',
+    inspector:'Luis Méndez',num_inspector:'OP-005',responsable:'QA-02',auditor:'Ing. García',
+    comentarios:'Segunda no conformidad en la misma semana. Posible problema sistémico en Línea 2.',
+    d8:[
+      {d:'D1',titulo:'Equipo de Respuesta',desc:'QA-02, OP-005, Supervisor T2, Ing. García',done:true},
+      {d:'D2',titulo:'Descripción del Problema',desc:'2 controles fuera de spec: diámetro lente 121.2 mm y amperaje 2.6 A.',done:true},
+      {d:'D3',titulo:'Acción de Contención',desc:'Lote en cuarentena. Revisión de equipos de medición en L2.',done:true},
+      {d:'D4',titulo:'Causa Raíz',desc:'En investigación.',done:false},
+      {d:'D5',titulo:'Acción Correctiva',desc:'—',done:false},
+      {d:'D6',titulo:'Implementación',desc:'—',done:false},
+      {d:'D7',titulo:'Verificación',desc:'—',done:false},
+      {d:'D8',titulo:'Cierre y Reconocimiento',desc:'—',done:false},
+    ],
+    columnas:['Diám. Lente (mm)','Ancho Housing (mm)','Amperaje (A)','Torque (Nm)','Cosmética','Sellado','LED'],
+    specs:[{lsl:119.5,usl:120.5},{lsl:74.0,usl:76.0},{lsl:2.8,usl:3.2},{lsl:2.5,usl:3.5},null,null,null],
+    muestras:[
+      {pieza:1,vals:[120.0,75.1,3.0,3.1,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:2,vals:[121.2,75.0,2.6,'PASS','FAIL','PASS','PASS'],resultado:'NOK'},
+      {pieza:3,vals:[120.1,74.9,3.1,3.2,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:4,vals:[119.9,75.2,2.9,2.8,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:5,vals:[120.3,75.0,3.0,3.0,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:6,vals:[120.1,74.8,2.6,3.1,'PASS','PASS','FAIL'],resultado:'NOK'},
+      {pieza:7,vals:[120.0,75.3,3.1,3.3,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:8,vals:[119.8,75.0,3.0,2.9,'PASS','PASS','PASS'],resultado:'OK'},
+    ],
+  },
+  {
+    id:'CNT-003',folio:'TL-20260414-D4E5F6',status:'revision',dias:1,
+    fecha_apertura:'14/04/2026',hora_apertura:'22:10',fecha_objetivo:'16/04/2026',fecha_cierre:null,
+    numero_parte:'TL-800-C',producto:'Headlamp 800',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 1',turno:3,
+    lote:'L-2026-046',cantidad_producida:24,cantidad_inspeccionada:24,cantidad_ok:22,cantidad_nok:2,
+    tipo_defecto:'Cosmético',defecto:'Rayones superficiales en lente — apariencia cosmética FAIL',
+    causa_raiz:'Manejo inadecuado en estación 5. Falta de protectores en charola de transporte.',
+    accion:'Revisión de proceso de manejo en estación 5. Capacitación programada para operadores T3.',
+    accion_correctiva:'Instalación de protectores de hule en charolas. Actualización de instrucción de trabajo.',
+    inspector:'Pedro Ruiz',num_inspector:'OP-006',responsable:'QA-07',auditor:'Ing. Martínez',
+    comentarios:'Defecto cosmético nivel 2. Piezas retiradas de línea para evaluación.',
+    d8:[
+      {d:'D1',titulo:'Equipo de Respuesta',desc:'QA-07, OP-006, Supervisor T3',done:true},
+      {d:'D2',titulo:'Descripción del Problema',desc:'Rayones en lente en 2 de 24 piezas. Detectado en inspección T3.',done:true},
+      {d:'D3',titulo:'Acción de Contención',desc:'Piezas segregadas. Revisión de estación 5.',done:true},
+      {d:'D4',titulo:'Causa Raíz',desc:'Charolas sin protección adecuada. Confirmado por revisión de puesto.',done:true},
+      {d:'D5',titulo:'Acción Correctiva',desc:'Protectores de hule + actualización de IT-EST-005. En proceso.',done:false},
+      {d:'D6',titulo:'Implementación',desc:'—',done:false},
+      {d:'D7',titulo:'Verificación',desc:'—',done:false},
+      {d:'D8',titulo:'Cierre y Reconocimiento',desc:'—',done:false},
+    ],
+    columnas:['Diám. Lente (mm)','Ancho Housing (mm)','Amperaje (A)','Torque (Nm)','Cosmética','Sellado','LED'],
+    specs:[{lsl:179.0,usl:181.0},{lsl:109.0,usl:111.0},{lsl:4.5,usl:5.5},{lsl:3.0,usl:4.0},null,null,null],
+    muestras:[
+      {pieza:1,vals:[180.1,110.2,5.0,3.6,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:2,vals:[180.0,110.0,5.1,3.5,'FAIL','PASS','PASS'],resultado:'NOK'},
+      {pieza:3,vals:[179.9,109.8,4.9,3.7,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:4,vals:[180.2,110.1,5.0,3.4,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:5,vals:[180.0,110.3,5.2,3.6,'FAIL','PASS','PASS'],resultado:'NOK'},
+      {pieza:6,vals:[180.1,110.0,5.0,3.5,'PASS','PASS','PASS'],resultado:'OK'},
+    ],
+  },
+  {
+    id:'CNT-004',folio:'TL-20260412-Z9Y8X7',status:'cerrada',dias:3,
+    fecha_apertura:'12/04/2026',hora_apertura:'09:30',fecha_objetivo:'15/04/2026',fecha_cierre:'15/04/2026',
+    numero_parte:'TL-120-R',producto:'Headlamp 120R',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 2',turno:1,
+    lote:'L-2026-038',cantidad_producida:60,cantidad_inspeccionada:60,cantidad_ok:60,cantidad_nok:0,
+    tipo_defecto:'Funcional',defecto:'Sellado deficiente — falla en prueba de agua (ingreso de humedad)',
+    causa_raiz:'Junta perimetral de proveedor con dureza fuera de especificación (Shore A 62 vs 70-80).',
+    accion:'Junta perimetral reemplazada. Prueba de agua superada al 100%. Lote liberado.',
+    accion_correctiva:'Cambio de proveedor de junta. Certificado de análisis requerido por lote. Lote re-inspeccionado y liberado.',
+    inspector:'María López',num_inspector:'OP-002',responsable:'QA-01',auditor:'Ing. García',
+    comentarios:'CERRADA. Lote L-2026-038 liberado el 15/04/2026. Proveedor notificado. Plan de acción 8D enviado.',
+    d8:[
+      {d:'D1',titulo:'Equipo de Respuesta',desc:'QA-01, OP-002, Compras, Proveedor Juntas S.A.',done:true},
+      {d:'D2',titulo:'Descripción del Problema',desc:'Falla en prueba de agua en 8 de 60 piezas. Ingreso de humedad por junta perimetral.',done:true},
+      {d:'D3',titulo:'Acción de Contención',desc:'Segregación de lote. Reemplazo de junta en todas las piezas.',done:true},
+      {d:'D4',titulo:'Causa Raíz',desc:'Junta fuera de spec de dureza (Shore A 62 vs 70-80). Proveedor no envió certificado.',done:true},
+      {d:'D5',titulo:'Acción Correctiva',desc:'Requerimiento de certificado por lote. Cambio a proveedor homologado.',done:true},
+      {d:'D6',titulo:'Implementación',desc:'Nuevo proveedor activo desde L-2026-039. Certificados recibidos.',done:true},
+      {d:'D7',titulo:'Verificación',desc:'Re-inspección 100% superada. 60/60 piezas OK.',done:true},
+      {d:'D8',titulo:'Cierre y Reconocimiento',desc:'Reporte 8D cerrado y archivado. Reconocimiento al equipo de QA.',done:true},
+    ],
+    columnas:['Diám. Lente (mm)','Ancho Housing (mm)','Amperaje (A)','Torque (Nm)','Cosmética','Sellado','LED'],
+    specs:[{lsl:119.5,usl:120.5},{lsl:74.0,usl:76.0},{lsl:2.8,usl:3.2},{lsl:2.5,usl:3.5},null,null,null],
+    muestras:[
+      {pieza:1,vals:[120.0,75.0,3.0,3.1,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:2,vals:[119.9,74.9,3.1,2.9,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:3,vals:[120.1,75.2,2.9,3.2,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:4,vals:[120.0,75.0,3.0,3.0,'PASS','PASS','PASS'],resultado:'OK'},
+      {pieza:5,vals:[120.2,74.8,3.1,3.1,'PASS','PASS','PASS'],resultado:'OK'},
+    ],
+  },
 ];
 
 const demo_failed_controls=[
@@ -999,7 +1195,7 @@ function renderGestion(){
   const contStLabel={activa:'Activa',revision:'En Revisión',cerrada:'Cerrada'};
   const contStClass={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
   document.getElementById('grContList').innerHTML=conts.map(c=>`
-    <div class="gr-item">
+    <div class="gr-item clickable" onclick="openContencionReport('${c.id}')">
       <div class="gr-item-top">
         <div class="gr-item-title">${c.id} — ${c.producto}</div>
         <span class="alert-st ${contStClass[c.status]||'abierta'}">${contStLabel[c.status]||c.status}</span>
@@ -1010,8 +1206,155 @@ function renderGestion(){
         <span>&#128101; ${c.responsable}</span>
       </div>
       <div class="gr-item-action">${c.accion}</div>
+      <div class="gr-item-click-hint">&#128065; Ver reporte completo →</div>
     </div>`).join('');
 }
+
+/* ── REPORTE DE CONTENCIÓN ── */
+function openContencionReport(id){
+  const allConts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
+    id:'LIVE-C'+r.id,folio:r.folio,status:'activa',dias:0,
+    fecha_apertura:r.fecha,hora_apertura:r.hora,fecha_objetivo:'—',fecha_cierre:null,
+    numero_parte:r.pn,producto:r.product,cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'—',turno:r.turno,
+    lote:r.lote,cantidad_producida:'—',cantidad_inspeccionada:r.pass_count+r.fail_count,
+    cantidad_ok:r.pass_count,cantidad_nok:r.fail_count,
+    tipo_defecto:'No Conformidad',defecto:'Liberación condicionada — ver detalle de inspección',
+    causa_raiz:'Pendiente de análisis.',
+    accion:r.contencion||'Sin descripción',accion_correctiva:'Por definir.',
+    inspector:r.operador,num_inspector:r.num_operador,responsable:r.num_operador,auditor:'—',
+    comentarios:'Generado automáticamente desde Liberación de Primera Pieza.',
+    d8:[
+      {d:'D1',titulo:'Equipo de Respuesta',desc:'Por asignar.',done:false},
+      {d:'D2',titulo:'Descripción del Problema',desc:r.contencion||'—',done:true},
+      {d:'D3',titulo:'Acción de Contención',desc:r.contencion||'—',done:true},
+      {d:'D4',titulo:'Causa Raíz',desc:'Pendiente.',done:false},
+      {d:'D5',titulo:'Acción Correctiva',desc:'—',done:false},
+      {d:'D6',titulo:'Implementación',desc:'—',done:false},
+      {d:'D7',titulo:'Verificación',desc:'—',done:false},
+      {d:'D8',titulo:'Cierre y Reconocimiento',desc:'—',done:false},
+    ],
+    columnas:null,specs:null,muestras:null,
+  }))];
+  const c=allConts.find(x=>x.id===id);
+  if(!c)return;
+
+  const stLabel={activa:'Activa',revision:'En Revisión',cerrada:'Cerrada'};
+  const stClass={activa:'abierta',revision:'investigacion',cerrada:'cerrada'};
+  const nok=Number(c.cantidad_nok)||0,ok=Number(c.cantidad_ok)||0,insp=Number(c.cantidad_inspeccionada)||0,prod=c.cantidad_producida;
+  const pct=insp?Math.round(nok/insp*100):0;
+
+  const colsHtml=c.columnas?c.columnas.map(col=>`<th>${col}</th>`).join(''):'';
+  const rowsHtml=c.muestras?c.muestras.map((m,mi)=>{
+    const rowClass=m.resultado==='NOK'?'rpt-row-nok':'rpt-row-ok';
+    const cellsHtml=m.vals.map((v,vi)=>{
+      const spec=c.specs&&c.specs[vi];
+      if(spec){
+        const num=parseFloat(v);
+        const fail=!isNaN(num)&&(num<spec.lsl||num>spec.usl);
+        return`<td class="${fail?'rpt-cell-nok':''}">${v}</td>`;
+      }
+      return`<td class="${v==='FAIL'?'rpt-cell-nok':v==='PASS'?'rpt-cell-ok':''}">${v}</td>`;
+    }).join('');
+    return`<tr class="${rowClass}"><td>Pieza ${m.pieza}</td>${cellsHtml}<td class="${m.resultado==='NOK'?'rpt-cell-nok':'rpt-cell-ok'}">${m.resultado}</td></tr>`;
+  }).join(''):'<tr><td colspan="20" style="text-align:center;padding:20px;color:var(--tl-gray-500)">Sin muestra de unidades registrada</td></tr>';
+
+  document.getElementById('rptPanel').innerHTML=`
+    <div class="rpt-topbar">
+      <div class="rpt-topbar-left">
+        <div><div class="rpt-id">Reporte de Contención — ${c.id}</div><div class="rpt-folio">Folio LPF: ${c.folio}</div></div>
+        <span class="alert-st ${stClass[c.status]||'abierta'}" style="font-size:12px">${stLabel[c.status]||c.status}</span>
+      </div>
+      <button class="rpt-close" onclick="closeContencionReport()">×</button>
+    </div>
+    <div class="rpt-body">
+
+      <!-- 1. Info del Parte -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">1. Información del Parte</div>
+        <div class="rpt-grid-4">
+          <div class="rpt-field"><div class="rpt-label">Número de Parte</div><div class="rpt-value">${c.numero_parte}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Descripción</div><div class="rpt-value">${c.producto}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Cliente</div><div class="rpt-value">${c.cliente}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Planta / BU</div><div class="rpt-value">${c.planta}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Línea de Producción</div><div class="rpt-value">${c.linea}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Turno</div><div class="rpt-value">Turno ${c.turno}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Número de Lote</div><div class="rpt-value">${c.lote}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Fecha de Apertura</div><div class="rpt-value">${c.fecha_apertura} ${c.hora_apertura}</div></div>
+        </div>
+      </div>
+
+      <!-- 2. Defecto -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">2. Identificación del Defecto</div>
+        <div class="rpt-grid-3" style="margin-bottom:12px">
+          <div class="rpt-field"><div class="rpt-label">Tipo de Defecto</div><div class="rpt-value">${c.tipo_defecto}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Fecha Objetivo de Cierre</div><div class="rpt-value">${c.fecha_objetivo}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Fecha de Cierre</div><div class="rpt-value">${c.fecha_cierre||'Abierto'}</div></div>
+        </div>
+        <div class="rpt-field"><div class="rpt-label">Descripción del Defecto</div><div class="rpt-value" style="font-size:14px;padding:10px 14px;background:var(--tl-fail-light);border-radius:8px;color:var(--tl-fail)">${c.defecto}</div></div>
+      </div>
+
+      <!-- 3. Resumen de Inspección -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">3. Resumen de Inspección del Lote</div>
+        <div class="rpt-summary-row">
+          <div class="rpt-sum-box"><div class="rpt-sum-val" style="color:var(--tl-blue)">${prod}</div><div class="rpt-sum-lbl">Piezas Producidas</div></div>
+          <div class="rpt-sum-box"><div class="rpt-sum-val" style="color:var(--tl-black)">${insp}</div><div class="rpt-sum-lbl">Inspeccionadas</div></div>
+          <div class="rpt-sum-box ok"><div class="rpt-sum-val">${ok}</div><div class="rpt-sum-lbl">Conformes (OK)</div></div>
+          <div class="rpt-sum-box nok"><div class="rpt-sum-val">${nok}</div><div class="rpt-sum-lbl">No Conformes (NOK)</div></div>
+          <div class="rpt-sum-box ${pct>0?'nok':'ok'}"><div class="rpt-sum-val">${pct}%</div><div class="rpt-sum-lbl">% NOK</div></div>
+        </div>
+      </div>
+
+      <!-- 4. Resultados de Muestra -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">4. Resultados de Muestra por Pieza</div>
+        <div style="overflow-x:auto">
+          <table class="rpt-table">
+            <thead><tr><th>Pieza</th>${colsHtml}<th>Resultado</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+        <p style="font-size:11px;color:var(--tl-gray-500);margin-top:8px">Valores en rojo indican fuera de especificación.</p>
+      </div>
+
+      <!-- 5. Acción de Contención -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">5. Acción de Contención Inmediata</div>
+        <div style="padding:14px 18px;background:var(--tl-amber-light);border-left:4px solid var(--tl-amber);border-radius:8px;font-size:14px;margin-bottom:12px">${c.accion}</div>
+        <div class="rpt-grid-2">
+          <div class="rpt-field"><div class="rpt-label">Causa Raíz Identificada</div><div class="rpt-value" style="font-size:13px;font-weight:500">${c.causa_raiz}</div></div>
+          <div class="rpt-field"><div class="rpt-label">Acción Correctiva</div><div class="rpt-value" style="font-size:13px;font-weight:500">${c.accion_correctiva}</div></div>
+        </div>
+      </div>
+
+      <!-- 6. 8D -->
+      <div class="rpt-section">
+        <div class="rpt-section-title">6. Progreso 8D — Proceso de Solución de Problemas</div>
+        <div class="d8-grid">${c.d8.map(s=>`
+          <div class="d8-step ${s.done?'done':'pending'}">
+            <div class="d8-label">${s.d} ${s.done?'✓':''}</div>
+            <div class="d8-title">${s.titulo}</div>
+            <div class="d8-desc">${s.desc}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- 7. Comentarios -->
+      ${c.comentarios?`<div class="rpt-section"><div class="rpt-section-title">7. Comentarios Adicionales</div><div style="padding:12px 16px;background:var(--tl-gray-100);border-radius:8px;font-size:13px">${c.comentarios}</div></div>`:''}
+
+    </div>
+    <div class="rpt-footer">
+      <div class="rpt-sign-row">
+        <div class="rpt-sign"><div class="rpt-sign-line"></div><div class="rpt-sign-name">${c.inspector}</div><div class="rpt-sign-role">Inspector — ${c.num_inspector}</div></div>
+        <div class="rpt-sign"><div class="rpt-sign-line"></div><div class="rpt-sign-name">${c.responsable}</div><div class="rpt-sign-role">Responsable QA</div></div>
+        <div class="rpt-sign"><div class="rpt-sign-line"></div><div class="rpt-sign-name">${c.auditor}</div><div class="rpt-sign-role">Auditor de Calidad</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--tl-gray-500);text-align:right">Generado: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}<br>Truck-Lite QC Kiosk — ${c.folio}</div>
+    </div>`;
+  document.getElementById('rptOverlay').classList.add('active');
+}
+function closeContencionReport(){document.getElementById('rptOverlay').classList.remove('active');}
 </script>
 </body>
 </html>
