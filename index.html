@@ -82,6 +82,56 @@
   .module-card.color-purple .module-card-icon{background:var(--tl-purple-light);}
   .module-card.color-amber .module-card-icon{background:var(--tl-amber-light);}
   .module-card.color-teal .module-card-icon{background:var(--tl-teal-light);}
+  .module-card.color-green::before{background:var(--tl-green);}
+  .module-card.color-green .module-card-icon{background:var(--tl-green-light);}
+  /* ── 8D MODULE ── */
+  .eightd-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
+  .eightd-list{display:flex;flex-direction:column;gap:16px;}
+  .eightd-card{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;border-left:5px solid var(--tl-gray-300);transition:box-shadow 0.2s;}
+  .eightd-card:hover{box-shadow:var(--shadow-md);}
+  .eightd-card.open{border-left-color:var(--tl-red);}
+  .eightd-card.progress{border-left-color:var(--tl-amber);}
+  .eightd-card.verify{border-left-color:var(--tl-blue);}
+  .eightd-card.closed{border-left-color:var(--tl-green);}
+  .eightd-header{padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;}
+  .eightd-header:hover{background:var(--tl-gray-100);}
+  .eightd-title-block{flex:1;}
+  .eightd-id{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;}
+  .eightd-title{font-weight:700;font-size:15px;margin:2px 0 4px;}
+  .eightd-meta{font-size:12px;color:var(--tl-gray-500);display:flex;gap:14px;flex-wrap:wrap;}
+  .eightd-badges{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+  .eightd-st{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;}
+  .eightd-st.open{background:var(--tl-fail-light);color:var(--tl-fail);}
+  .eightd-st.progress{background:var(--tl-amber-light);color:var(--tl-amber);}
+  .eightd-st.verify{background:var(--tl-blue-light);color:var(--tl-blue);}
+  .eightd-st.closed{background:var(--tl-green-light);color:var(--tl-green);}
+  .eightd-chevron{font-size:18px;color:var(--tl-gray-500);transition:transform 0.3s;}
+  .eightd-chevron.open{transform:rotate(90deg);}
+  .eightd-body{display:none;border-top:1px solid var(--tl-gray-100);padding:20px 22px;}
+  .eightd-body.open{display:block;}
+  /* progress bar */
+  .eightd-progress-wrap{margin-bottom:20px;}
+  .eightd-progress-label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--tl-gray-500);margin-bottom:6px;}
+  .eightd-progress-track{background:var(--tl-gray-100);border-radius:4px;height:10px;}
+  .eightd-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--tl-green),var(--tl-green-light));transition:width 0.6s;}
+  /* steps grid */
+  .eightd-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .eightd-step{border-radius:10px;padding:12px 14px;border:2px solid var(--tl-gray-100);}
+  .eightd-step.done{background:var(--tl-green-light);border-color:var(--tl-green);}
+  .eightd-step.active-step{background:var(--tl-amber-light);border-color:var(--tl-amber);}
+  .eightd-step.pending{background:var(--tl-gray-100);border-color:var(--tl-gray-300);opacity:0.6;}
+  .eightd-step-label{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;margin-bottom:2px;}
+  .eightd-step.done .eightd-step-label{color:var(--tl-green);}
+  .eightd-step.active-step .eightd-step-label{color:var(--tl-amber);}
+  .eightd-step.pending .eightd-step-label{color:var(--tl-gray-500);}
+  .eightd-step-title{font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:3px;}
+  .eightd-step-desc{font-size:11px;color:var(--tl-gray-700);line-height:1.4;}
+  /* detail fields */
+  .eightd-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;}
+  .eightd-field{display:flex;flex-direction:column;gap:3px;}
+  .eightd-field-label{font-size:10px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;}
+  .eightd-field-value{font-size:13px;font-weight:600;}
+  @media(max-width:768px){.eightd-steps{grid-template-columns:1fr 1fr}.eightd-kpi-row{grid-template-columns:repeat(3,1fr)}.eightd-detail-grid{grid-template-columns:1fr 1fr}}
   /* alert severity / status */
   .alert-sev{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
   .alert-sev.critica{background:var(--tl-fail-light);color:var(--tl-fail);}
@@ -462,6 +512,13 @@
         <div class="module-card-desc">Alertas de calidad activas y contenciones en proceso. Seguimiento en tiempo real de no conformidades y acciones correctivas.</div>
         <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — <span id="panelAlertCount">3 alertas abiertas</span></div>
       </div>
+      <!-- 8Ds -->
+      <div class="module-card color-green animate-in" onclick="openModule('eightd')">
+        <div class="module-card-icon">&#128295;</div>
+        <div class="module-card-name">8Ds — Solución de Problemas</div>
+        <div class="module-card-desc">Reportes 8D activos vinculados a no conformidades. Seguimiento por disciplina, responsable y fecha de cierre.</div>
+        <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — <span id="panel8dCount">2 abiertos</span></div>
+      </div>
       <!-- Reclamaciones de Cliente -->
       <div class="module-card color-purple animate-in disabled">
         <div class="module-card-icon">&#128221;</div>
@@ -618,6 +675,16 @@
         <div class="gr-list" id="grContList"></div>
       </div>
     </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MÓDULO: 8Ds
+  ══════════════════════════════════ -->
+  <div class="module" id="module8D">
+    <div class="screen-title animate-in">8Ds — Solución de Problemas</div>
+    <div class="screen-desc animate-in">Reportes 8D activos y cerrados</div>
+    <div class="eightd-kpi-row" id="edKPIs"></div>
+    <div class="eightd-list" id="edList"></div>
   </div>
 
 </div><!-- /main -->
@@ -814,6 +881,83 @@ const demo_failed_controls=[
   {name:'Diámetro de lente',count:1,color:'amber'},
 ];
 
+/* ── 8D DEMO DATA ── */
+const demo_8ds=[
+  {
+    id:'8D-2026-001',status:'open',titulo:'Amperaje fuera de spec — Headlamp 920L Línea 3',
+    producto:'Headlamp 920L',parte:'TL-920-L',lote:'L-2026-041',cliente:'Truck-Lite OEM',
+    fecha_apertura:'14/04/2026',fecha_objetivo:'28/04/2026',fecha_cierre:null,
+    responsable:'Ing. Martínez',equipo:['QA-05','OP-001','Supervisor T1','Ing. Martínez'],
+    d:[
+      {n:'D1',titulo:'Equipo de Respuesta',status:'done',resp:'Ing. Martínez',fecha:'14/04/2026',
+       desc:'Equipo formado: QA-05, OP-001, Supervisor T1, Ing. Martínez. Kick-off realizado el 14/04.'},
+      {n:'D2',titulo:'Descripción del Problema',status:'done',resp:'QA-05',fecha:'14/04/2026',
+       desc:'Amperaje medido 3.6A vs LSL 3.8A en 3 inspecciones consecutivas turno 1. Folio TL-20260414-A1B2C3.'},
+      {n:'D3',titulo:'Acción de Contención',status:'done',resp:'OP-001',fecha:'14/04/2026',
+       desc:'Segregación de lote L-2026-041. Re-inspección 100% en proceso. Fuente de poder marcada para revisión.'},
+      {n:'D4',titulo:'Causa Raíz',status:'active',resp:'Ing. Martínez',fecha:'18/04/2026',
+       desc:'En análisis. Hipótesis: variación en voltaje de alimentación de línea 3 durante turno 1 (06:00-08:00).'},
+      {n:'D5',titulo:'Acción Correctiva',status:'pending',resp:'—',fecha:'21/04/2026',desc:'Pendiente resultado D4.'},
+      {n:'D6',titulo:'Implementación',status:'pending',resp:'—',fecha:'24/04/2026',desc:'—'},
+      {n:'D7',titulo:'Verificación',status:'pending',resp:'—',fecha:'27/04/2026',desc:'—'},
+      {n:'D8',titulo:'Cierre y Reconocimiento',status:'pending',resp:'—',fecha:'28/04/2026',desc:'—'},
+    ],
+  },
+  {
+    id:'8D-2026-002',status:'progress',titulo:'Torque inconsistente — Headlamp 120L ensamble housing',
+    producto:'Headlamp 120L',parte:'TL-120-L',lote:'L-2026-042',cliente:'Truck-Lite OEM',
+    fecha_apertura:'14/04/2026',fecha_objetivo:'25/04/2026',fecha_cierre:null,
+    responsable:'Ing. García',equipo:['QA-02','OP-003','Maint-01','Ing. García'],
+    d:[
+      {n:'D1',titulo:'Equipo de Respuesta',status:'done',resp:'Ing. García',fecha:'14/04/2026',
+       desc:'Equipo: QA-02, OP-003, Mantenimiento-01, Ing. García.'},
+      {n:'D2',titulo:'Descripción del Problema',status:'done',resp:'QA-02',fecha:'14/04/2026',
+       desc:'Torque fuera de spec en 7/48 piezas lote L-2026-042. Torquímetro OP-03 descalibrado ±0.8Nm.'},
+      {n:'D3',titulo:'Acción de Contención',status:'done',resp:'OP-003',fecha:'14/04/2026',
+       desc:'Lote segregado área Q1. Torquímetro OP-03 reemplazado. Re-inspección 100% completada: 41 OK, 7 NOK.'},
+      {n:'D4',titulo:'Causa Raíz',status:'done',resp:'Maint-01',fecha:'15/04/2026',
+       desc:'Torquímetro OP-03 sin calibración por 90 días. Falla en sistema de recordatorio de calibración (hoja Excel manual).'},
+      {n:'D5',titulo:'Acción Correctiva',status:'active',resp:'Ing. García',fecha:'20/04/2026',
+       desc:'Implementar sistema digital de control de calibración. Frecuencia: mensual para torquímetros en línea.'},
+      {n:'D6',titulo:'Implementación',status:'pending',resp:'QA-02',fecha:'22/04/2026',desc:'Pendiente aprobación de sistema.'},
+      {n:'D7',titulo:'Verificación',status:'pending',resp:'—',fecha:'24/04/2026',desc:'—'},
+      {n:'D8',titulo:'Cierre y Reconocimiento',status:'pending',resp:'—',fecha:'25/04/2026',desc:'—'},
+    ],
+  },
+  {
+    id:'8D-2026-003',status:'verify',titulo:'Sellado deficiente — junta perimetral Headlamp 120R',
+    producto:'Headlamp 120R',parte:'TL-120-R',lote:'L-2026-038',cliente:'Truck-Lite OEM',
+    fecha_apertura:'12/04/2026',fecha_objetivo:'15/04/2026',fecha_cierre:null,
+    responsable:'Ing. García',equipo:['QA-01','Compras','Proveedor Juntas S.A.','Ing. García'],
+    d:[
+      {n:'D1',titulo:'Equipo de Respuesta',status:'done',resp:'Ing. García',fecha:'12/04/2026',desc:'QA-01, Compras, Proveedor Juntas S.A., Ing. García.'},
+      {n:'D2',titulo:'Descripción del Problema',status:'done',resp:'QA-01',fecha:'12/04/2026',desc:'Falla en prueba de agua en 8/60 piezas. Ingreso de humedad por junta perimetral.'},
+      {n:'D3',titulo:'Acción de Contención',status:'done',resp:'OP-002',fecha:'12/04/2026',desc:'Segregación del lote. Reemplazo de junta en todas las piezas. Re-prueba de agua: 60/60 OK.'},
+      {n:'D4',titulo:'Causa Raíz',status:'done',resp:'QA-01',fecha:'13/04/2026',desc:'Dureza de junta fuera de spec (Shore A 62 vs requerimiento 70-80). Proveedor no envió certificado de análisis.'},
+      {n:'D5',titulo:'Acción Correctiva',status:'done',resp:'Compras',fecha:'13/04/2026',desc:'Requerimiento de certificado por lote. Cambio a proveedor homologado Juntas Premium S.A.'},
+      {n:'D6',titulo:'Implementación',status:'done',resp:'Compras',fecha:'14/04/2026',desc:'Nuevo proveedor activo desde lote L-2026-039. Certificados recibidos y archivados.'},
+      {n:'D7',titulo:'Verificación',status:'active',resp:'QA-01',fecha:'15/04/2026',desc:'Re-inspección de lote L-2026-039 y L-2026-040 en proceso. Resultados preliminares positivos.'},
+      {n:'D8',titulo:'Cierre y Reconocimiento',status:'pending',resp:'Ing. García',fecha:'15/04/2026',desc:'Pendiente cierre formal.'},
+    ],
+  },
+  {
+    id:'8D-2026-004',status:'closed',titulo:'Rayones en lente cosmético — Headlamp 800 estación 5',
+    producto:'Headlamp 800',parte:'TL-800-C',lote:'L-2026-046',cliente:'Truck-Lite OEM',
+    fecha_apertura:'14/04/2026',fecha_objetivo:'17/04/2026',fecha_cierre:'15/04/2026',
+    responsable:'Ing. Martínez',equipo:['QA-07','OP-006','Prod-01','Ing. Martínez'],
+    d:[
+      {n:'D1',titulo:'Equipo de Respuesta',status:'done',resp:'Ing. Martínez',fecha:'14/04/2026',desc:'QA-07, OP-006, Producción-01, Ing. Martínez.'},
+      {n:'D2',titulo:'Descripción del Problema',status:'done',resp:'QA-07',fecha:'14/04/2026',desc:'Rayones nivel 2 en lente en 2/24 piezas T3. Cosmética FAIL.'},
+      {n:'D3',titulo:'Acción de Contención',status:'done',resp:'OP-006',fecha:'14/04/2026',desc:'Piezas segregadas. Revisión inmediata de estación 5.'},
+      {n:'D4',titulo:'Causa Raíz',status:'done',resp:'Prod-01',fecha:'14/04/2026',desc:'Charolas sin protección adecuada en est. 5. Confirmado por video de planta y revisión de puesto.'},
+      {n:'D5',titulo:'Acción Correctiva',status:'done',resp:'Prod-01',fecha:'14/04/2026',desc:'Instalación de protectores de hule en charolas. Actualización IT-EST-005.'},
+      {n:'D6',titulo:'Implementación',status:'done',resp:'Prod-01',fecha:'15/04/2026',desc:'Protectores instalados. IT actualizada y difundida a operadores T1, T2, T3.'},
+      {n:'D7',titulo:'Verificación',status:'done',resp:'QA-07',fecha:'15/04/2026',desc:'Inspección post-implementación: 0 defectos cosméticos en 30 piezas. Efectividad 100%.'},
+      {n:'D8',titulo:'Cierre y Reconocimiento',status:'done',resp:'Ing. Martínez',fecha:'15/04/2026',desc:'8D cerrado. Reconocimiento al equipo por resolución en menos de 24h. Lección aprendida documentada.'},
+    ],
+  },
+];
+
 /* ── PANEL ALERT COUNTER (live) ── */
 function updatePanelAlertCount(){
   const open=demo_alertas.filter(a=>a.status==='abierta').length;
@@ -865,6 +1009,11 @@ function openModule(name){
     document.getElementById('lpfNav').style.display='none';
     crumb.textContent='/ Gestión de Reclamos';
     renderGestion();
+  } else if(name==='eightd'){
+    document.getElementById('module8D').classList.add('active');
+    document.getElementById('lpfNav').style.display='none';
+    crumb.textContent='/ 8Ds';
+    renderEightD();
   } else if(name==='lpas'){
     document.getElementById('moduleLPAs').classList.add('active');
     document.getElementById('lpfNav').style.display='none';
@@ -1417,6 +1566,83 @@ function openContencionReport(id){
   document.getElementById('rptOverlay').classList.add('active');
 }
 function closeContencionReport(){document.getElementById('rptOverlay').classList.remove('active');}
+
+/* ── 8D MODULE ── */
+function renderEightD(){
+  const stLabel={open:'Abierto',progress:'En Progreso',verify:'En Verificación',closed:'Cerrado'};
+  const stClass={open:'open',progress:'progress',verify:'verify',closed:'closed'};
+
+  const total=demo_8ds.length;
+  const open=demo_8ds.filter(d=>d.status==='open').length;
+  const progress=demo_8ds.filter(d=>d.status==='progress').length;
+  const verify=demo_8ds.filter(d=>d.status==='verify').length;
+  const closed=demo_8ds.filter(d=>d.status==='closed').length;
+
+  /* Update panel badge */
+  const pb=document.getElementById('panel8dCount');
+  if(pb)pb.textContent=(open+progress)+' abiertos';
+
+  document.getElementById('edKPIs').innerHTML=`
+    <div class="kpi-card kpi-blue animate-in"><div class="kpi-label">Total 8Ds</div><div class="kpi-value">${total}</div><div class="kpi-sub">reportes registrados</div></div>
+    <div class="kpi-card kpi-red animate-in"><div class="kpi-label">Abiertos</div><div class="kpi-value">${open}</div><div class="kpi-sub">requieren acción</div></div>
+    <div class="kpi-card kpi-amber animate-in"><div class="kpi-label">En Progreso</div><div class="kpi-value">${progress}</div><div class="kpi-sub">D4–D6 activos</div></div>
+    <div class="kpi-card" style="border-left-color:var(--tl-blue);border-left:4px solid var(--tl-blue)" class="animate-in"><div class="kpi-label">En Verificación</div><div class="kpi-value" style="color:var(--tl-blue)">${verify}</div><div class="kpi-sub">D7 activo</div></div>
+    <div class="kpi-card kpi-green animate-in"><div class="kpi-label">Cerrados</div><div class="kpi-value">${closed}</div><div class="kpi-sub">resueltos</div></div>`;
+
+  document.getElementById('edList').innerHTML=demo_8ds.map(r=>{
+    const doneCount=r.d.filter(s=>s.status==='done').length;
+    const pct=Math.round(doneCount/8*100);
+    const activeStep=r.d.find(s=>s.status==='active');
+    return`<div class="eightd-card ${stClass[r.status]} animate-in">
+      <div class="eightd-header" onclick="toggle8D('${r.id}')">
+        <div class="eightd-title-block">
+          <div class="eightd-id">${r.id} &nbsp;·&nbsp; ${r.parte}</div>
+          <div class="eightd-title">${r.titulo}</div>
+          <div class="eightd-meta">
+            <span>&#128230; ${r.producto}</span>
+            <span>&#128197; Apertura: ${r.fecha_apertura}</span>
+            <span>&#127919; Objetivo: ${r.fecha_objetivo}</span>
+            ${r.fecha_cierre?`<span>&#9989; Cerrado: ${r.fecha_cierre}</span>`:''}
+            <span>&#128101; ${r.responsable}</span>
+            ${activeStep?`<span style="color:var(--tl-amber);font-weight:700">&#9654; Activo: ${activeStep.n} ${activeStep.titulo}</span>`:''}
+          </div>
+        </div>
+        <div class="eightd-badges">
+          <span style="font-size:12px;color:var(--tl-gray-500);font-weight:600">${pct}%</span>
+          <span class="eightd-st ${stClass[r.status]}">${stLabel[r.status]}</span>
+          <span class="eightd-chevron" id="chev_${r.id}">&#9654;</span>
+        </div>
+      </div>
+      <div class="eightd-body" id="body_${r.id}">
+        <div class="eightd-progress-wrap">
+          <div class="eightd-progress-label"><span>Progreso 8D</span><span>${doneCount}/8 disciplinas completadas</span></div>
+          <div class="eightd-progress-track"><div class="eightd-progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="eightd-steps">${r.d.map(s=>`
+          <div class="eightd-step ${s.status==='done'?'done':s.status==='active'?'active-step':'pending'}">
+            <div class="eightd-step-label">${s.n} ${s.status==='done'?'✓':s.status==='active'?'▶':''}</div>
+            <div class="eightd-step-title">${s.titulo}</div>
+            <div class="eightd-step-desc">${s.desc}</div>
+            ${s.status!=='pending'?`<div style="font-size:10px;color:var(--tl-gray-500);margin-top:4px">&#128101; ${s.resp} &nbsp;·&nbsp; &#128197; ${s.fecha}</div>`:''}
+          </div>`).join('')}
+        </div>
+        <div class="eightd-detail-grid">
+          <div class="eightd-field"><div class="eightd-field-label">Lote</div><div class="eightd-field-value">${r.lote}</div></div>
+          <div class="eightd-field"><div class="eightd-field-label">Cliente</div><div class="eightd-field-value">${r.cliente}</div></div>
+          <div class="eightd-field"><div class="eightd-field-label">Equipo</div><div class="eightd-field-value">${r.equipo.join(', ')}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggle8D(id){
+  const body=document.getElementById('body_'+id);
+  const chev=document.getElementById('chev_'+id);
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
+}
 </script>
 </body>
 </html>
