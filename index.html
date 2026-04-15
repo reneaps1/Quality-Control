@@ -644,13 +644,8 @@
 
 <script>
 /* ── DATA ── */
-const products=[
-  {id:1,name:"Headlamp 920L",pn:"TL-920-L",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:149.5,usl:150.5,target:150.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:89.0,usl:91.0,target:90.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:3.8,usl:4.2,target:4.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
-  {id:2,name:"Headlamp 920R",pn:"TL-920-R",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:149.5,usl:150.5,target:150.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:89.0,usl:91.0,target:90.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:3.8,usl:4.2,target:4.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
-  {id:3,name:"Headlamp 120L",pn:"TL-120-L",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:119.5,usl:120.5,target:120.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:74.0,usl:76.0,target:75.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:2.8,usl:3.2,target:3.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
-  {id:4,name:"Headlamp 120R",pn:"TL-120-R",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:119.5,usl:120.5,target:120.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:74.0,usl:76.0,target:75.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:2.8,usl:3.2,target:3.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:2.5,usl:3.5,target:3.0},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
-  {id:5,name:"Headlamp 800",pn:"TL-800-C",bu:"CHL",controls:[{id:1,name:"Diámetro de lente",type:"numeric",unit:"mm",lsl:179.0,usl:181.0,target:180.0},{id:2,name:"Ancho de housing",type:"numeric",unit:"mm",lsl:109.0,usl:111.0,target:110.0},{id:3,name:"Amperaje @ 12V",type:"numeric",unit:"A",lsl:4.5,usl:5.5,target:5.0},{id:4,name:"Torque de tornillos",type:"numeric",unit:"Nm",lsl:3.0,usl:4.0,target:3.5},{id:5,name:"Apariencia cosmética",type:"variable"},{id:6,name:"Sellado (prueba de agua)",type:"variable"},{id:7,name:"Funcionalidad LED",type:"variable"}]},
-];
+/* ── API ── */
+const API = 'http://127.0.0.1:5000/api';
 
 let currentScreen=1,selectedBU=null,selectedProduct=null,controlValues={};
 const db_inspections=[],db_results=[];
@@ -890,15 +885,37 @@ function selectBU(bu){
   badge.textContent=bu;badge.style.display='';
   renderProducts(bu);goToScreen(2);
 }
-function renderProducts(bu){
-  document.getElementById('productGrid').innerHTML=products.filter(p=>p.bu===bu).map(p=>`
-    <div class="product-card animate-in" onclick="selectProduct(${p.id})">
-      <div class="product-img"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="32" rx="26" ry="20" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.3"/></svg></div>
-      <div class="product-name">${p.name}</div><div class="product-pn">${p.pn}</div>
-      <div class="product-controls-count">${p.controls.length} controles</div>
-    </div>`).join('');
+async function renderProducts(bu){
+  const grid=document.getElementById('productGrid');
+  grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--tl-gray-500)">Cargando productos...</div>';
+  try {
+    const res=await fetch(`${API}/products?bu=${bu}`);
+    const prods=await res.json();
+    grid.innerHTML=prods.map(p=>`
+      <div class="product-card animate-in" onclick="selectProduct(${p.id})">
+        <div class="product-img"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="32" rx="26" ry="20" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.3"/></svg></div>
+        <div class="product-name">${p.name}</div><div class="product-pn">${p.part_number}</div>
+        <div class="product-controls-count">Ver controles</div>
+      </div>`).join('');
+  } catch(e){
+    grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--tl-fail)">Error al conectar con la API. ¿Está corriendo Flask?</div>';
+  }
 }
-function selectProduct(id){selectedProduct=products.find(p=>p.id===id);controlValues={};renderForm();goToScreen(3);}
+async function selectProduct(id){
+  controlValues={};
+  try {
+    const [pRes,cRes]=await Promise.all([
+      fetch(`${API}/products`),
+      fetch(`${API}/products/${id}/controls`)
+    ]);
+    const prods=await pRes.json();
+    const controls=await cRes.json();
+    selectedProduct={...prods.find(p=>p.id===id),controls,pn:prods.find(p=>p.id===id).part_number};
+    renderForm();goToScreen(3);
+  } catch(e){
+    alert('Error al cargar el producto. ¿Está corriendo Flask?');
+  }
+}
 
 function renderForm(){
   const p=selectedProduct,nc=p.controls.filter(c=>c.type==='numeric'),vc=p.controls.filter(c=>c.type==='variable');
@@ -978,7 +995,7 @@ function genQR(text){
   return`<svg viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}" xmlns="http://www.w3.org/2000/svg"><rect width="${sz}" height="${sz}" fill="white"/>${rects}</svg>`;
 }
 
-function submit(){
+async function submit(){
   const numOp=document.getElementById('numOperador').value,op=document.getElementById('operador').value,turno=document.getElementById('turno').value,lote=document.getElementById('lote').value;
   if(!numOp||!op||!turno){alert('Completa No. Operador, Nombre y Turno');return;}
   const total=selectedProduct.controls.length,filled=Object.keys(controlValues).length;
@@ -990,18 +1007,49 @@ function submit(){
     if(!c1||!c2||!c3){alert('Confirme las 3 casillas del auditor');return;}
     if(!contencion.trim()){alert('Registre la acción de contención');return;}
   }
-  const result=hasFail?'CONDITIONAL':'PASS',now=new Date(),folio=genFolio(),iid=inspId++;
+  const result=hasFail?'CONDITIONAL':'PASS',now=new Date(),folio=genFolio();
   const pc=Object.values(controlValues).filter(v=>v.result==='PASS').length,fc=Object.values(controlValues).filter(v=>v.result==='FAIL').length;
-  db_inspections.push({id:iid,bu:selectedBU,product:selectedProduct.name,pn:selectedProduct.pn,num_operador:numOp,operador:op,turno:parseInt(turno),lote:lote||'N/A',fecha:now.toLocaleDateString('es-MX'),hora:now.toLocaleTimeString('es-MX'),resultado:result,folio,contencion:contencion||null,pass_count:pc,fail_count:fc});
-  selectedProduct.controls.forEach(c=>{const cv=controlValues[c.id];db_results.push({id:resId++,inspection_id:iid,control_name:c.name,control_type:c.type,spec:c.type==='numeric'?`${c.lsl}–${c.usl} ${c.unit}`:'Variable',valor:cv.value,resultado:cv.result});});
-  renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc);goToScreen(4);
+
+  /* Construir payload para la API */
+  const payload={
+    product_id: selectedProduct.id,
+    business_unit_id: selectedProduct.business_unit_id,
+    operator_number: numOp,
+    operator_name: op,
+    shift: parseInt(turno),
+    lot_number: lote||null,
+    result,
+    folio,
+    containment: contencion||null,
+    results: selectedProduct.controls.map(c=>{
+      const cv=controlValues[c.id];
+      return {
+        control_id: c.id,
+        value_text:  c.type==='variable' ? cv.value : null,
+        value_numeric: c.type==='numeric' ? cv.value : null,
+        result: cv.result
+      };
+    })
+  };
+
+  try {
+    const res=await fetch(`${API}/inspections`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json();
+    /* Guardar también en memoria para el dashboard/DB overlay de la sesión */
+    const iid=data.inspection_id;
+    db_inspections.push({id:iid,bu:selectedBU,product:selectedProduct.name,pn:selectedProduct.pn,num_operador:numOp,operador:op,turno:parseInt(turno),lote:lote||'N/A',fecha:now.toLocaleDateString('es-MX'),hora:now.toLocaleTimeString('es-MX'),resultado:result,folio,contencion:contencion||null,pass_count:pc,fail_count:fc});
+    selectedProduct.controls.forEach(c=>{const cv=controlValues[c.id];db_results.push({id:resId++,inspection_id:iid,control_name:c.name,control_type:c.type,spec:c.type==='numeric'?`${c.lsl}–${c.usl} ${c.unit}`:'Variable',valor:cv.value,resultado:cv.result});});
+    renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc,iid);goToScreen(4);
+  } catch(e){
+    alert('Error al guardar la inspección. ¿Está corriendo Flask?');
+  }
 }
-function renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc){
+function renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc,iid){
   const now=new Date(),isCond=result==='CONDITIONAL',cls=isCond?'conditional':'pass',label=isCond?'Liberación Condicionada':'Inspección Aprobada',icon=isCond?'⚠️':'✓';
   document.getElementById('confirmContainer').innerHTML=`
     <div class="confirm-icon ${cls}">${icon}</div>
     <div class="confirm-title ${cls}">${label}</div>
-    <div class="confirm-subtitle">Registro #${db_inspections.length} guardado exitosamente</div>
+    <div class="confirm-subtitle">Registro #${iid} guardado en base de datos</div>
     <div class="ticket" style="margin-bottom:28px">
       <div class="ticket-strip ${cls}"></div>
       <div class="ticket-body">
@@ -1031,26 +1079,40 @@ function newInsp(){controlValues={};goToScreen(1);}
 
 /* ── DB OVERLAY ── */
 function toggleDBView(){const o=document.getElementById('dbOverlay'),b=document.getElementById('dbTabBtn');o.classList.toggle('active');b.classList.toggle('active');if(o.classList.contains('active'))switchDBTab('inspections',document.querySelector('.db-tab'));}
-function switchDBTab(tab,el){
+async function switchDBTab(tab,el){
   document.querySelectorAll('.db-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
   const ct=document.getElementById('dbContent'),cn=document.getElementById('dbCount');
+  ct.innerHTML='<div class="db-empty"><div class="db-empty-text">Cargando...</div></div>';
   if(tab==='inspections'){
-    if(!db_inspections.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">📋</div><div class="db-empty-text">No hay inspecciones registradas aún.</div></div>';cn.textContent='0 registros';return;}
-    ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Folio</th><th>Fecha</th><th>Hora</th><th>BU</th><th>Producto</th><th>No.Op</th><th>Operador</th><th>T</th><th>Lote</th><th>OK</th><th>Fail</th><th>Resultado</th><th>Contención</th></tr></thead><tbody>
-    ${db_inspections.map(r=>`<tr><td style="font-weight:700">${r.id}</td><td style="font-size:10px">${r.folio}</td><td>${r.fecha}</td><td>${r.hora}</td><td>${r.bu}</td><td style="font-weight:600">${r.product}</td><td>${r.num_operador}</td><td>${r.operador}</td><td>T${r.turno}</td><td>${r.lote}</td><td style="color:var(--tl-green);font-weight:700">${r.pass_count}</td><td style="color:${r.fail_count?'var(--tl-fail)':'var(--tl-gray-500)'};font-weight:700">${r.fail_count}</td><td><span class="control-status ${r.resultado.toLowerCase()}">${r.resultado==='CONDITIONAL'?'COND.':r.resultado}</span></td><td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${r.contencion||'—'}</td></tr>`).join('')}</tbody></table>`;
-    cn.textContent=`${db_inspections.length} registro(s) en tabla inspections`;
+    try {
+      const rows=await fetch(`${API}/inspections`).then(r=>r.json());
+      if(!rows.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">📋</div><div class="db-empty-text">No hay inspecciones registradas aún.</div></div>';cn.textContent='0 registros';return;}
+      ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Folio</th><th>Fecha</th><th>BU</th><th>Producto</th><th>No.Op</th><th>Operador</th><th>T</th><th>Lote</th><th>Resultado</th><th>Contención</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr><td style="font-weight:700">${r.id}</td><td style="font-size:10px">${r.folio}</td><td>${r.created_at?.substring(0,16)||'—'}</td><td>${r.bu_code}</td><td style="font-weight:600">${r.product_name}</td><td>${r.operator_number}</td><td>${r.operator_name}</td><td>T${r.shift}</td><td>${r.lot_number||'N/A'}</td><td><span class="control-status ${r.result.toLowerCase()}">${r.result==='CONDITIONAL'?'COND.':r.result}</span></td><td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">${r.containment||'—'}</td></tr>`).join('')}</tbody></table>`;
+      cn.textContent=`${rows.length} registro(s) en tabla inspections`;
+    } catch(e){ct.innerHTML='<div class="db-empty"><div class="db-empty-text" style="color:var(--tl-fail)">Error al conectar con la API</div></div>';}
   } else if(tab==='results'){
-    if(!db_results.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">🔍</div><div class="db-empty-text">No hay resultados aún.</div></div>';cn.textContent='0 registros';return;}
+    if(!db_results.length){ct.innerHTML='<div class="db-empty"><div class="db-empty-icon">🔍</div><div class="db-empty-text">No hay resultados en esta sesión aún.</div></div>';cn.textContent='0 registros';return;}
     ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Insp.ID</th><th>Control</th><th>Tipo</th><th>Spec</th><th>Valor</th><th>Resultado</th></tr></thead><tbody>
     ${db_results.map(r=>`<tr><td style="font-weight:700">${r.id}</td><td>${r.inspection_id}</td><td style="font-weight:600">${r.control_name}</td><td>${r.control_type}</td><td style="color:var(--tl-gray-500)">${r.spec}</td><td style="font-weight:600">${r.valor}</td><td><span class="control-status ${r.resultado.toLowerCase()}">${r.resultado}</span></td></tr>`).join('')}</tbody></table>`;
     cn.textContent=`${db_results.length} registro(s) en tabla inspection_results`;
   } else if(tab==='products'){
-    ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Producto</th><th>P/N</th><th>BU</th><th>Controles</th></tr></thead><tbody>${products.map(p=>`<tr><td style="font-weight:700">${p.id}</td><td style="font-weight:600">${p.name}</td><td>${p.pn}</td><td>${p.bu}</td><td>${p.controls.length}</td></tr>`).join('')}</tbody></table>`;
-    cn.textContent=`${products.length} registro(s)`;
+    try {
+      const rows=await fetch(`${API}/products`).then(r=>r.json());
+      ct.innerHTML=`<table class="db-table"><thead><tr><th>ID</th><th>Producto</th><th>P/N</th><th>BU</th></tr></thead><tbody>${rows.map(p=>`<tr><td style="font-weight:700">${p.id}</td><td style="font-weight:600">${p.name}</td><td>${p.part_number}</td><td>${p.bu_code}</td></tr>`).join('')}</tbody></table>`;
+      cn.textContent=`${rows.length} registro(s)`;
+    } catch(e){ct.innerHTML='<div class="db-empty"><div class="db-empty-text" style="color:var(--tl-fail)">Error al conectar con la API</div></div>';}
   } else if(tab==='controls'){
-    const all=[];products.forEach(p=>p.controls.forEach(c=>all.push({...c,product:p.name})));
-    ct.innerHTML=`<table class="db-table"><thead><tr><th>Producto</th><th>Control</th><th>Tipo</th><th>Unidad</th><th>LSL</th><th>Target</th><th>USL</th></tr></thead><tbody>${all.map(c=>`<tr><td style="font-weight:600">${c.product}</td><td>${c.name}</td><td>${c.type}</td><td>${c.unit||'—'}</td><td>${c.lsl!=null?c.lsl:'—'}</td><td style="font-weight:600">${c.target!=null?c.target:'—'}</td><td>${c.usl!=null?c.usl:'—'}</td></tr>`).join('')}</tbody></table>`;
-    cn.textContent=`${all.length} registro(s)`;
+    try {
+      const prods=await fetch(`${API}/products`).then(r=>r.json());
+      const all=[];
+      await Promise.all(prods.map(async p=>{
+        const cs=await fetch(`${API}/products/${p.id}/controls`).then(r=>r.json());
+        cs.forEach(c=>all.push({...c,product:p.name}));
+      }));
+      ct.innerHTML=`<table class="db-table"><thead><tr><th>Producto</th><th>Control</th><th>Tipo</th><th>Unidad</th><th>LSL</th><th>Target</th><th>USL</th></tr></thead><tbody>${all.map(c=>`<tr><td style="font-weight:600">${c.product}</td><td>${c.name}</td><td>${c.type}</td><td>${c.unit||'—'}</td><td>${c.lsl!=null?c.lsl:'—'}</td><td style="font-weight:600">${c.target!=null?c.target:'—'}</td><td>${c.usl!=null?c.usl:'—'}</td></tr>`).join('')}</tbody></table>`;
+      cn.textContent=`${all.length} registro(s)`;
+    } catch(e){ct.innerHTML='<div class="db-empty"><div class="db-empty-text" style="color:var(--tl-fail)">Error al conectar con la API</div></div>';}
   }
 }
 
