@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Truck-Lite QC Kiosk</title>
+<title>ABC Corp QC Kiosk</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -537,7 +537,7 @@
 <!-- ── HEADER ── -->
 <div class="header">
   <div class="header-left">
-    <div class="logo-mark">TL</div>
+    <div class="logo-mark">AB</div>
     <div>
       <div class="header-title">Quality Control Kiosk</div>
       <div class="header-subtitle">Inspection System</div>
@@ -545,7 +545,7 @@
     <div class="module-crumb" id="moduleCrumb"></div>
   </div>
   <div class="header-right">
-    <div class="header-badge" id="buBadge" style="display:none">CHL</div>
+    <div class="header-badge" id="buBadge" style="display:none">BU1</div>
     <button class="btn-home" id="btnHome" onclick="goHome()">&#8592; Panel</button>
     <button class="db-tab-btn" id="dbTabBtn" style="display:none" onclick="toggleDBView()">&#128202; Base de Datos</button>
     <div class="header-time" id="clock">--:--:--</div>
@@ -579,7 +579,7 @@
         <div class="module-card-icon">&#9989;</div>
         <div class="module-card-name">Liberación de Primera Pieza</div>
         <div class="module-card-desc">Inspección dimensional y funcional de primera pieza con controles numéricos y variables. Genera ticket de liberación y registra en base de datos.</div>
-        <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — CHL</div>
+        <div class="module-card-badge badge-active"><span class="badge-dot"></span>Activo — BU1</div>
       </div>
       <!-- Dashboard -->
       <div class="module-card color-blue animate-in" onclick="openModule('dashboard')">
@@ -634,12 +634,12 @@
       <div class="screen-title animate-in">Selecciona Unidad de Negocio</div>
       <div class="screen-desc animate-in">Elige la unidad de negocio para esta inspección</div>
       <div class="bu-grid">
-        <div class="bu-card animate-in" onclick="selectBU('CHL')"><div class="bu-icon">&#128161;</div><div class="bu-name">CHL</div><div class="bu-desc">Commercial Headlamp Lighting</div><div class="bu-badge active">Activo — 5 productos</div></div>
-        <div class="bu-card disabled animate-in"><div class="bu-icon">&#128296;</div><div class="bu-name">RIGID</div><div class="bu-desc">Rigid Industries</div><div class="bu-badge soon">Próximamente</div></div>
+        <div class="bu-card animate-in" onclick="selectBU('BU1')"><div class="bu-icon">&#128161;</div><div class="bu-name">BU1</div><div class="bu-desc">Unidad de Negocio 1</div><div class="bu-badge active">Activo — 5 productos</div></div>
+        <div class="bu-card disabled animate-in"><div class="bu-icon">&#128296;</div><div class="bu-name">BU2</div><div class="bu-desc">Unidad de Negocio 2</div><div class="bu-badge soon">Próximamente</div></div>
       </div>
     </div>
     <div class="screen" id="screen2">
-      <div class="screen-title">Selecciona Producto</div><div class="screen-desc">CHL — Commercial Headlamp Lighting</div>
+      <div class="screen-title">Selecciona Producto</div><div class="screen-desc">BU1 — Unidad de Negocio 1</div>
       <div class="product-grid" id="productGrid"></div>
       <div style="margin-top:24px"><button class="btn-back" onclick="goToScreen(1)">&#8249; Cambiar Unidad</button></div>
     </div>
@@ -763,8 +763,8 @@
       <div class="gr-filter-label">BU</div>
       <div class="gr-filter-group" id="grFilterBU">
         <div class="gr-chip active" data-bu="all" onclick="setGrFilter('bu','all')">Todas</div>
-        <div class="gr-chip" data-bu="CHL" onclick="setGrFilter('bu','CHL')">CHL</div>
-        <div class="gr-chip" data-bu="RIGID" onclick="setGrFilter('bu','RIGID')">RIGID</div>
+        <div class="gr-chip" data-bu="BU1" onclick="setGrFilter('bu','BU1')">BU1</div>
+        <div class="gr-chip" data-bu="BU2" onclick="setGrFilter('bu','BU2')">BU2</div>
       </div>
       <div class="gr-divider"></div>
       <div class="gr-filter-label">Estatus</div>
@@ -874,43 +874,43 @@ let inspId=1,resId=1;
 
 /* Demo data for dashboard (simulates a populated database) */
 const demo_inspections=[
-  /* ── Abril 2026 – CHL ── */
-  {id:'D01',folio:'TL-20260414-A1B2C3',fecha:'14/04/2026',hora:'06:18',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D02',folio:'TL-20260414-D4E5F6',fecha:'14/04/2026',hora:'06:45',bu:'CHL',product:'Headlamp 920R',pn:'TL-920-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D03',folio:'TL-20260414-G7H8I9',fecha:'14/04/2026',hora:'07:10',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-042',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Se segregó pieza. Reajuste de torquímetro. Supervisó auditor QA-05.'},
-  {id:'D04',folio:'TL-20260414-J1K2L3',fecha:'14/04/2026',hora:'08:30',bu:'CHL',product:'Headlamp 800',pn:'TL-800-C',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-043',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D05',folio:'TL-20260414-M4N5O6',fecha:'14/04/2026',hora:'14:05',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-004',operador:'Ana Soto',turno:2,lote:'L-2026-044',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D06',folio:'TL-20260414-P7Q8R9',fecha:'14/04/2026',hora:'14:55',bu:'CHL',product:'Headlamp 120R',pn:'TL-120-R',num_operador:'OP-005',operador:'Luis Méndez',turno:2,lote:'L-2026-044',resultado:'CONDITIONAL',pass_count:5,fail_count:2,contencion:'Dos controles fuera de spec. Lote completo en cuarentena. Análisis 8D iniciado.'},
-  {id:'D07',folio:'TL-20260414-S1T2U3',fecha:'14/04/2026',hora:'15:20',bu:'CHL',product:'Headlamp 920R',pn:'TL-920-R',num_operador:'OP-004',operador:'Ana Soto',turno:2,lote:'L-2026-045',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D08',folio:'TL-20260414-V4W5X6',fecha:'14/04/2026',hora:'22:10',bu:'CHL',product:'Headlamp 800',pn:'TL-800-C',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-046',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D09',folio:'TL-20260415-Y7Z8A9',fecha:'15/04/2026',hora:'06:12',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-047',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D10',folio:'TL-20260415-B1C2D3',fecha:'15/04/2026',hora:'06:50',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-047',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Amperaje ligeramente bajo. Fuente calibrada. Liberación autorizada por QA-02.'},
-  /* ── Marzo 2026 – CHL ── */
-  {id:'D11',folio:'TL-20260328-C4D5E6',fecha:'28/03/2026',hora:'06:22',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D12',folio:'TL-20260328-F7G8H9',fecha:'28/03/2026',hora:'07:05',bu:'CHL',product:'Headlamp 120R',pn:'TL-120-R',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D13',folio:'TL-20260328-I1J2K3',fecha:'28/03/2026',hora:'14:30',bu:'CHL',product:'Headlamp 800',pn:'TL-800-C',num_operador:'OP-005',operador:'Luis Méndez',turno:2,lote:'L-2026-032',resultado:'CONDITIONAL',pass_count:5,fail_count:2,contencion:'Fuga de sellado detectada. Pieza segregada. Proveedor notificado.'},
-  {id:'D14',folio:'TL-20260329-L4M5N6',fecha:'29/03/2026',hora:'06:40',bu:'CHL',product:'Headlamp 920R',pn:'TL-920-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-033',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  {id:'D15',folio:'TL-20260330-O7P8Q9',fecha:'30/03/2026',hora:'22:15',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-034',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
-  /* ── Marzo 2026 – RIGID ── */
-  {id:'D16',folio:'RG-20260325-A1B2C3',fecha:'25/03/2026',hora:'07:10',bu:'RIGID',product:'LED Bar 20"',pn:'RG-LB-020',num_operador:'OP-R01',operador:'Sofia Herrera',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
-  {id:'D17',folio:'RG-20260325-D4E5F6',fecha:'25/03/2026',hora:'08:00',bu:'RIGID',product:'LED Bar 40"',pn:'RG-LB-040',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
-  {id:'D18',folio:'RG-20260326-G7H8I9',fecha:'26/03/2026',hora:'14:20',bu:'RIGID',product:'LED Bar 20"',pn:'RG-LB-020',num_operador:'OP-R01',operador:'Sofia Herrera',turno:2,lote:'R-2026-012',resultado:'CONDITIONAL',pass_count:5,fail_count:1,contencion:'Intensidad lumínica por debajo del mínimo en prueba de campo.'},
-  {id:'D19',folio:'RG-20260327-J1K2L3',fecha:'27/03/2026',hora:'06:55',bu:'RIGID',product:'Spot Light 6"',pn:'RG-SL-006',num_operador:'OP-R03',operador:'Diego Castro',turno:1,lote:'R-2026-013',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
-  /* ── Abril 2026 – RIGID ── */
-  {id:'D20',folio:'RG-20260410-M4N5O6',fecha:'10/04/2026',hora:'07:30',bu:'RIGID',product:'LED Bar 40"',pn:'RG-LB-040',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-021',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
-  {id:'D21',folio:'RG-20260411-P7Q8R9',fecha:'11/04/2026',hora:'14:10',bu:'RIGID',product:'Spot Light 6"',pn:'RG-SL-006',num_operador:'OP-R03',operador:'Diego Castro',turno:2,lote:'R-2026-022',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  /* ── Abril 2026 – BU1 ── */
+  {id:'D01',folio:'BU1-20260414-A1B2C3',fecha:'14/04/2026',hora:'06:18',bu:'BU1',product:'Modelo X1-L',pn:'BU1-001-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D02',folio:'BU1-20260414-D4E5F6',fecha:'14/04/2026',hora:'06:45',bu:'BU1',product:'Modelo X1-R',pn:'BU1-001-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D03',folio:'BU1-20260414-G7H8I9',fecha:'14/04/2026',hora:'07:10',bu:'BU1',product:'Modelo X2-L',pn:'BU1-002-L',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-042',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Se segregó pieza. Reajuste de torquímetro. Supervisó auditor QA-05.'},
+  {id:'D04',folio:'BU1-20260414-J1K2L3',fecha:'14/04/2026',hora:'08:30',bu:'BU1',product:'Modelo X3',pn:'BU1-003-C',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-043',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D05',folio:'BU1-20260414-M4N5O6',fecha:'14/04/2026',hora:'14:05',bu:'BU1',product:'Modelo X1-L',pn:'BU1-001-L',num_operador:'OP-004',operador:'Ana Soto',turno:2,lote:'L-2026-044',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D06',folio:'BU1-20260414-P7Q8R9',fecha:'14/04/2026',hora:'14:55',bu:'BU1',product:'Modelo X2-R',pn:'BU1-002-R',num_operador:'OP-005',operador:'Luis Méndez',turno:2,lote:'L-2026-044',resultado:'CONDITIONAL',pass_count:5,fail_count:2,contencion:'Dos controles fuera de spec. Lote completo en cuarentena. Análisis 8D iniciado.'},
+  {id:'D07',folio:'BU1-20260414-S1T2U3',fecha:'14/04/2026',hora:'15:20',bu:'BU1',product:'Modelo X1-R',pn:'BU1-001-R',num_operador:'OP-004',operador:'Ana Soto',turno:2,lote:'L-2026-045',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D08',folio:'BU1-20260414-V4W5X6',fecha:'14/04/2026',hora:'22:10',bu:'BU1',product:'Modelo X3',pn:'BU1-003-C',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-046',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D09',folio:'BU1-20260415-Y7Z8A9',fecha:'15/04/2026',hora:'06:12',bu:'BU1',product:'Modelo X2-L',pn:'BU1-002-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-047',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D10',folio:'BU1-20260415-B1C2D3',fecha:'15/04/2026',hora:'06:50',bu:'BU1',product:'Modelo X1-L',pn:'BU1-001-L',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-047',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Amperaje ligeramente bajo. Fuente calibrada. Liberación autorizada por QA-02.'},
+  /* ── Marzo 2026 – BU1 ── */
+  {id:'D11',folio:'BU1-20260328-C4D5E6',fecha:'28/03/2026',hora:'06:22',bu:'BU1',product:'Modelo X1-L',pn:'BU1-001-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D12',folio:'BU1-20260328-F7G8H9',fecha:'28/03/2026',hora:'07:05',bu:'BU1',product:'Modelo X2-R',pn:'BU1-002-R',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D13',folio:'BU1-20260328-I1J2K3',fecha:'28/03/2026',hora:'14:30',bu:'BU1',product:'Modelo X3',pn:'BU1-003-C',num_operador:'OP-005',operador:'Luis Méndez',turno:2,lote:'L-2026-032',resultado:'CONDITIONAL',pass_count:5,fail_count:2,contencion:'Fuga de sellado detectada. Pieza segregada. Proveedor notificado.'},
+  {id:'D14',folio:'BU1-20260329-L4M5N6',fecha:'29/03/2026',hora:'06:40',bu:'BU1',product:'Modelo X1-R',pn:'BU1-001-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-033',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D15',folio:'BU1-20260330-O7P8Q9',fecha:'30/03/2026',hora:'22:15',bu:'BU1',product:'Modelo X2-L',pn:'BU1-002-L',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-034',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  /* ── Marzo 2026 – BU2 ── */
+  {id:'D16',folio:'BU2-20260325-A1B2C3',fecha:'25/03/2026',hora:'07:10',bu:'BU2',product:'Modelo Y1-S',pn:'BU2-001-S',num_operador:'OP-R01',operador:'Sofia Herrera',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D17',folio:'BU2-20260325-D4E5F6',fecha:'25/03/2026',hora:'08:00',bu:'BU2',product:'Modelo Y1-L',pn:'BU2-001-L',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D18',folio:'BU2-20260326-G7H8I9',fecha:'26/03/2026',hora:'14:20',bu:'BU2',product:'Modelo Y1-S',pn:'BU2-001-S',num_operador:'OP-R01',operador:'Sofia Herrera',turno:2,lote:'R-2026-012',resultado:'CONDITIONAL',pass_count:5,fail_count:1,contencion:'Intensidad lumínica por debajo del mínimo en prueba de campo.'},
+  {id:'D19',folio:'BU2-20260327-J1K2L3',fecha:'27/03/2026',hora:'06:55',bu:'BU2',product:'Modelo Y2',pn:'BU2-002',num_operador:'OP-R03',operador:'Diego Castro',turno:1,lote:'R-2026-013',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  /* ── Abril 2026 – BU2 ── */
+  {id:'D20',folio:'BU2-20260410-M4N5O6',fecha:'10/04/2026',hora:'07:30',bu:'BU2',product:'Modelo Y1-L',pn:'BU2-001-L',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-021',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D21',folio:'BU2-20260411-P7Q8R9',fecha:'11/04/2026',hora:'14:10',bu:'BU2',product:'Modelo Y2',pn:'BU2-002',num_operador:'OP-R03',operador:'Diego Castro',turno:2,lote:'R-2026-022',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
 ];
 const demo_alertas=[
-  {id:'ALT-001',titulo:'Amperaje fuera de spec — línea 3',severidad:'critica',status:'abierta',producto:'Headlamp 920L',lote:'L-2026-041',fecha:'14/04/2026',responsable:'QA-05 / J. Rodríguez',descripcion:'Amperaje medido 3.6A vs LSL 3.8A. Se detectó en 3 inspecciones consecutivas del turno 1.'},
-  {id:'ALT-002',titulo:'Torque inconsistente en ensamble housing',severidad:'mayor',status:'investigacion',producto:'Headlamp 120L',lote:'L-2026-042',fecha:'14/04/2026',responsable:'QA-02 / M. López',descripcion:'Torquímetro OP-03 fuera de calibración. Posible afectación de lotes L-2026-040 a L-2026-043.'},
-  {id:'ALT-003',titulo:'Apariencia cosmética — rayones en lente',severidad:'menor',status:'investigacion',producto:'Headlamp 800',lote:'L-2026-046',fecha:'14/04/2026',responsable:'QA-07 / A. Soto',descripcion:'Rayones superficiales detectados en 2 piezas del turno 3. Se revisará proceso de manejo.'},
-  {id:'ALT-004',titulo:'Sellado deficiente — prueba de agua',severidad:'mayor',status:'cerrada',producto:'Headlamp 120R',lote:'L-2026-038',fecha:'12/04/2026',responsable:'QA-01 / P. Ruiz',descripcion:'Falla de sellado en junta perimetral. Proveedor notificado. Lote devuelto. CERRADA.'},
+  {id:'ALT-001',titulo:'Amperaje fuera de spec — línea 3',severidad:'critica',status:'abierta',producto:'Modelo X1-L',lote:'L-2026-041',fecha:'14/04/2026',responsable:'QA-05 / J. Rodríguez',descripcion:'Amperaje medido 3.6A vs LSL 3.8A. Se detectó en 3 inspecciones consecutivas del turno 1.'},
+  {id:'ALT-002',titulo:'Torque inconsistente en ensamble housing',severidad:'mayor',status:'investigacion',producto:'Modelo X2-L',lote:'L-2026-042',fecha:'14/04/2026',responsable:'QA-02 / M. López',descripcion:'Torquímetro OP-03 fuera de calibración. Posible afectación de lotes L-2026-040 a L-2026-043.'},
+  {id:'ALT-003',titulo:'Apariencia cosmética — rayones en lente',severidad:'menor',status:'investigacion',producto:'Modelo X3',lote:'L-2026-046',fecha:'14/04/2026',responsable:'QA-07 / A. Soto',descripcion:'Rayones superficiales detectados en 2 piezas del turno 3. Se revisará proceso de manejo.'},
+  {id:'ALT-004',titulo:'Sellado deficiente — prueba de agua',severidad:'mayor',status:'cerrada',producto:'Modelo X2-R',lote:'L-2026-038',fecha:'12/04/2026',responsable:'QA-01 / P. Ruiz',descripcion:'Falla de sellado en junta perimetral. Proveedor notificado. Lote devuelto. CERRADA.'},
 ];
 const demo_contenciones=[
   {
-    id:'CNT-001',folio:'TL-20260414-G7H8I9',status:'activa',dias:1,
+    id:'CNT-001',folio:'BU1-20260414-G7H8I9',status:'activa',dias:1,
     fecha_apertura:'14/04/2026',hora_apertura:'07:10',fecha_objetivo:'17/04/2026',fecha_cierre:null,
-    numero_parte:'TL-120-L',producto:'Headlamp 120L',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 3',turno:1,
+    numero_parte:'BU1-002-L',producto:'Modelo X2-L',cliente:'Cliente OEM',planta:'BU1 — Planta Norte',linea:'Línea 3',turno:1,
     lote:'L-2026-042',cantidad_producida:48,cantidad_inspeccionada:48,cantidad_ok:41,cantidad_nok:7,
     tipo_defecto:'Dimensional',defecto:'Torque de tornillos fuera de especificación (LSL: 2.5 Nm)',
     causa_raiz:'Torquímetro OP-03 descalibrado. Desviación detectada: ±0.8 Nm vs valor real.',
@@ -944,9 +944,9 @@ const demo_contenciones=[
     ],
   },
   {
-    id:'CNT-002',folio:'TL-20260414-P7Q8R9',status:'activa',dias:1,
+    id:'CNT-002',folio:'BU1-20260414-P7Q8R9',status:'activa',dias:1,
     fecha_apertura:'14/04/2026',hora_apertura:'14:55',fecha_objetivo:'18/04/2026',fecha_cierre:null,
-    numero_parte:'TL-120-R',producto:'Headlamp 120R',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 2',turno:2,
+    numero_parte:'BU1-002-R',producto:'Modelo X2-R',cliente:'Cliente OEM',planta:'BU1 — Planta Norte',linea:'Línea 2',turno:2,
     lote:'L-2026-044',cantidad_producida:36,cantidad_inspeccionada:36,cantidad_ok:34,cantidad_nok:2,
     tipo_defecto:'Dimensional / Funcional',defecto:'Diámetro de lente y amperaje fuera de especificación',
     causa_raiz:'En análisis. Posible variación en proveedor de lentes y ajuste de fuente de poder.',
@@ -978,9 +978,9 @@ const demo_contenciones=[
     ],
   },
   {
-    id:'CNT-003',folio:'TL-20260414-D4E5F6',status:'revision',dias:1,
+    id:'CNT-003',folio:'BU1-20260414-D4E5F6',status:'revision',dias:1,
     fecha_apertura:'14/04/2026',hora_apertura:'22:10',fecha_objetivo:'16/04/2026',fecha_cierre:null,
-    numero_parte:'TL-800-C',producto:'Headlamp 800',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 1',turno:3,
+    numero_parte:'BU1-003-C',producto:'Modelo X3',cliente:'Cliente OEM',planta:'BU1 — Planta Norte',linea:'Línea 1',turno:3,
     lote:'L-2026-046',cantidad_producida:24,cantidad_inspeccionada:24,cantidad_ok:22,cantidad_nok:2,
     tipo_defecto:'Cosmético',defecto:'Rayones superficiales en lente — apariencia cosmética FAIL',
     causa_raiz:'Manejo inadecuado en estación 5. Falta de protectores en charola de transporte.',
@@ -1010,9 +1010,9 @@ const demo_contenciones=[
     ],
   },
   {
-    id:'CNT-004',folio:'TL-20260412-Z9Y8X7',status:'cerrada',dias:3,
+    id:'CNT-004',folio:'BU1-20260412-Z9Y8X7',status:'cerrada',dias:3,
     fecha_apertura:'12/04/2026',hora_apertura:'09:30',fecha_objetivo:'15/04/2026',fecha_cierre:'15/04/2026',
-    numero_parte:'TL-120-R',producto:'Headlamp 120R',cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'Línea 2',turno:1,
+    numero_parte:'BU1-002-R',producto:'Modelo X2-R',cliente:'Cliente OEM',planta:'BU1 — Planta Norte',linea:'Línea 2',turno:1,
     lote:'L-2026-038',cantidad_producida:60,cantidad_inspeccionada:60,cantidad_ok:60,cantidad_nok:0,
     tipo_defecto:'Funcional',defecto:'Sellado deficiente — falla en prueba de agua (ingreso de humedad)',
     causa_raiz:'Junta perimetral de proveedor con dureza fuera de especificación (Shore A 62 vs 70-80).',
@@ -1053,8 +1053,8 @@ const demo_failed_controls=[
 /* ── 8D DEMO DATA ── */
 const demo_8ds=[
   {
-    id:'8D-2026-001',status:'open',titulo:'Amperaje fuera de spec — Headlamp 920L Línea 3',
-    producto:'Headlamp 920L',parte:'TL-920-L',lote:'L-2026-041',cliente:'Truck-Lite OEM',
+    id:'8D-2026-001',status:'open',titulo:'Amperaje fuera de spec — Modelo X1-L Línea 3',
+    producto:'Modelo X1-L',parte:'BU1-001-L',lote:'L-2026-041',cliente:'Cliente OEM',
     fecha_apertura:'14/04/2026',fecha_objetivo:'28/04/2026',fecha_cierre:null,
     responsable:'Ing. Martínez',equipo:['QA-05','OP-001','Supervisor T1','Ing. Martínez'],
     d:[
@@ -1073,8 +1073,8 @@ const demo_8ds=[
     ],
   },
   {
-    id:'8D-2026-002',status:'progress',titulo:'Torque inconsistente — Headlamp 120L ensamble housing',
-    producto:'Headlamp 120L',parte:'TL-120-L',lote:'L-2026-042',cliente:'Truck-Lite OEM',
+    id:'8D-2026-002',status:'progress',titulo:'Torque inconsistente — Modelo X2-L ensamble housing',
+    producto:'Modelo X2-L',parte:'BU1-002-L',lote:'L-2026-042',cliente:'Cliente OEM',
     fecha_apertura:'14/04/2026',fecha_objetivo:'25/04/2026',fecha_cierre:null,
     responsable:'Ing. García',equipo:['QA-02','OP-003','Maint-01','Ing. García'],
     d:[
@@ -1094,8 +1094,8 @@ const demo_8ds=[
     ],
   },
   {
-    id:'8D-2026-003',status:'verify',titulo:'Sellado deficiente — junta perimetral Headlamp 120R',
-    producto:'Headlamp 120R',parte:'TL-120-R',lote:'L-2026-038',cliente:'Truck-Lite OEM',
+    id:'8D-2026-003',status:'verify',titulo:'Sellado deficiente — junta perimetral Modelo X2-R',
+    producto:'Modelo X2-R',parte:'BU1-002-R',lote:'L-2026-038',cliente:'Cliente OEM',
     fecha_apertura:'12/04/2026',fecha_objetivo:'15/04/2026',fecha_cierre:null,
     responsable:'Ing. García',equipo:['QA-01','Compras','Proveedor Juntas S.A.','Ing. García'],
     d:[
@@ -1110,8 +1110,8 @@ const demo_8ds=[
     ],
   },
   {
-    id:'8D-2026-004',status:'closed',titulo:'Rayones en lente cosmético — Headlamp 800 estación 5',
-    producto:'Headlamp 800',parte:'TL-800-C',lote:'L-2026-046',cliente:'Truck-Lite OEM',
+    id:'8D-2026-004',status:'closed',titulo:'Rayones en lente cosmético — Modelo X3 estación 5',
+    producto:'Modelo X3',parte:'BU1-003-C',lote:'L-2026-046',cliente:'Cliente OEM',
     fecha_apertura:'14/04/2026',fecha_objetivo:'17/04/2026',fecha_cierre:'15/04/2026',
     responsable:'Ing. Martínez',equipo:['QA-07','OP-006','Prod-01','Ing. Martínez'],
     d:[
@@ -1377,7 +1377,7 @@ function renderTicket(numOp,op,turno,lote,result,folio,contencion,pc,fc,iid){
     <div class="ticket" style="margin-bottom:28px">
       <div class="ticket-strip ${cls}"></div>
       <div class="ticket-body">
-        <div class="ticket-logo">Truck-Lite — Quality Control</div>
+        <div class="ticket-logo">ABC Corp — Quality Control</div>
         <div class="ticket-status ${cls}">${isCond?'Liberación Condicionada':'Aprobado'}</div>
         <div class="ticket-folio">Folio: ${folio}</div>
         <div class="ticket-qr">${genQR(folio)}</div>
@@ -1526,7 +1526,7 @@ function renderDashboard(){
   const maxProd=Math.max(...Object.values(byProduct),1);
   document.getElementById('dashByProduct').innerHTML=total?`<div class="bar-chart">${Object.entries(byProduct).sort((a,b)=>b[1]-a[1]).map(([name,cnt])=>`
     <div class="bar-row">
-      <div class="bar-label" title="${name}">${name.replace('Headlamp ','HL ').replace(' Bar ',' ')}</div>
+      <div class="bar-label" title="${name}">${name}</div>
       <div class="bar-track"><div class="bar-fill blue" style="width:${Math.round(cnt/maxProd*100)}%"><span class="bar-val">${cnt}</span></div></div>
       <div class="bar-pct">${Math.round(cnt/total*100)}%</div>
     </div>`).join('')}</div>`:'<p style="color:var(--tl-gray-500);text-align:center;padding:24px;">Sin datos para los filtros seleccionados</p>';
@@ -1587,12 +1587,12 @@ function setGrFilter(type, val){
 function applyGrFilters(){
   const alertas=[...demo_alertas,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
     id:'LIVE-'+r.id,titulo:'No conformidad — '+r.product,severidad:'mayor',status:'abierta',
-    bu:'CHL',producto:r.product,lote:r.lote,fecha:r.fecha,
+    bu:'BU1',producto:r.product,lote:r.lote,fecha:r.fecha,
     responsable:r.num_operador+' / '+r.operador,
     descripcion:'Liberación condicionada registrada en sesión actual. Acción: '+(r.contencion||'N/A'),
   }))];
   const conts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
-    id:'LIVE-C'+r.id,folio:r.folio,bu:'CHL',producto:r.product,lote:r.lote,
+    id:'LIVE-C'+r.id,folio:r.folio,bu:'BU1',producto:r.product,lote:r.lote,
     accion:r.contencion||'Sin descripción',responsable:r.num_operador,dias:0,status:'activa',
   }))];
 
@@ -1657,12 +1657,12 @@ function applyGrFilters(){
 function renderGestion(){
   const alertas=[...demo_alertas,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
     id:'LIVE-'+r.id,titulo:'No conformidad — '+r.product,severidad:'mayor',status:'abierta',
-    bu:'CHL',producto:r.product,lote:r.lote,fecha:r.fecha,
+    bu:'BU1',producto:r.product,lote:r.lote,fecha:r.fecha,
     responsable:r.num_operador+' / '+r.operador,
     descripcion:'Liberación condicionada registrada en sesión actual. Acción: '+(r.contencion||'N/A'),
   }))];
   const conts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
-    id:'LIVE-C'+r.id,folio:r.folio,bu:'CHL',producto:r.product,lote:r.lote,
+    id:'LIVE-C'+r.id,folio:r.folio,bu:'BU1',producto:r.product,lote:r.lote,
     accion:r.contencion||'Sin descripción',responsable:r.num_operador,dias:0,status:'activa',
   }))];
 
@@ -1690,7 +1690,7 @@ function openContencionReport(id){
   const allConts=[...demo_contenciones,...db_inspections.filter(r=>r.resultado==='CONDITIONAL').map(r=>({
     id:'LIVE-C'+r.id,folio:r.folio,status:'activa',dias:0,
     fecha_apertura:r.fecha,hora_apertura:r.hora,fecha_objetivo:'—',fecha_cierre:null,
-    numero_parte:r.pn,producto:r.product,cliente:'Truck-Lite OEM',planta:'CHL — Chihuahua',linea:'—',turno:r.turno,
+    numero_parte:r.pn,producto:r.product,cliente:'Cliente OEM',planta:'BU1 — Planta Norte',linea:'—',turno:r.turno,
     lote:r.lote,cantidad_producida:'—',cantidad_inspeccionada:r.pass_count+r.fail_count,
     cantidad_ok:r.pass_count,cantidad_nok:r.fail_count,
     tipo_defecto:'No Conformidad',defecto:'Liberación condicionada — ver detalle de inspección',
@@ -1825,7 +1825,7 @@ function openContencionReport(id){
         <div class="rpt-sign"><div class="rpt-sign-line"></div><div class="rpt-sign-name">${c.responsable}</div><div class="rpt-sign-role">Responsable QA</div></div>
         <div class="rpt-sign"><div class="rpt-sign-line"></div><div class="rpt-sign-name">${c.auditor}</div><div class="rpt-sign-role">Auditor de Calidad</div></div>
       </div>
-      <div style="font-size:11px;color:var(--tl-gray-500);text-align:right">Generado: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}<br>Truck-Lite QC Kiosk — ${c.folio}</div>
+      <div style="font-size:11px;color:var(--tl-gray-500);text-align:right">Generado: ${new Date().toLocaleDateString('es-MX')} ${new Date().toLocaleTimeString('es-MX')}<br>ABC Corp QC Kiosk — ${c.folio}</div>
     </div>`;
   document.getElementById('rptOverlay').classList.add('active');
 }
@@ -1911,7 +1911,7 @@ function toggle8D(id){
 /* ── 5S MODULE ── */
 const demo_5s=[
   {
-    id:'5S-2025-041',folio:'5S-2025-041',linea:'L-01 Truck-Lite 920',auditor:'Carlos Medina',fecha:'2025-04-10',turno:'1er Turno',
+    id:'5S-2025-041',folio:'5S-2025-041',linea:'L-01 ABC Corp 920',auditor:'Carlos Medina',fecha:'2025-04-10',turno:'1er Turno',
     scores:{seiri:9,seiton:8,seiso:9,seiketsu:8,shitsuke:9},total:43,max:50,
     status:'aprobada',
     observaciones:'Área en excelentes condiciones. Materiales correctamente identificados y almacenados. Sin materiales obsoletos en estación.',
@@ -1921,7 +1921,7 @@ const demo_5s=[
     ]
   },
   {
-    id:'5S-2025-040',folio:'5S-2025-040',linea:'L-02 Truck-Lite 120',auditor:'Ana Torres',fecha:'2025-04-09',turno:'2do Turno',
+    id:'5S-2025-040',folio:'5S-2025-040',linea:'L-02 ABC Corp 120',auditor:'Ana Torres',fecha:'2025-04-09',turno:'2do Turno',
     scores:{seiri:7,seiton:6,seiso:7,seiketsu:6,shitsuke:7},total:33,max:50,
     status:'observaciones',
     observaciones:'Se encontraron herramientas sin identificar en la estación 3. Área de scrap sin señalización adecuada. Piso con manchas de aceite cerca de prensa hidráulica.',
@@ -1932,7 +1932,7 @@ const demo_5s=[
     ]
   },
   {
-    id:'5S-2025-039',folio:'5S-2025-039',linea:'L-03 Truck-Lite 800',auditor:'Jorge Reyes',fecha:'2025-04-08',turno:'1er Turno',
+    id:'5S-2025-039',folio:'5S-2025-039',linea:'L-03 ABC Corp 800',auditor:'Jorge Reyes',fecha:'2025-04-08',turno:'1er Turno',
     scores:{seiri:5,seiton:4,seiso:5,seiketsu:4,shitsuke:4},total:22,max:50,
     status:'reprobada',
     observaciones:'Área presenta acumulación de materiales sin clasificar desde semana pasada. Pasillos parcialmente obstruidos. Iluminación insuficiente en zona de ensamble. Requiere acción correctiva inmediata.',
@@ -1944,7 +1944,7 @@ const demo_5s=[
     ]
   },
   {
-    id:'5S-2025-038',folio:'5S-2025-038',linea:'L-01 Truck-Lite 920',auditor:'Laura Soto',fecha:'2025-04-04',turno:'1er Turno',
+    id:'5S-2025-038',folio:'5S-2025-038',linea:'L-01 ABC Corp 920',auditor:'Laura Soto',fecha:'2025-04-04',turno:'1er Turno',
     scores:{seiri:8,seiton:9,seiso:8,seiketsu:9,shitsuke:8},total:42,max:50,
     status:'aprobada',
     observaciones:'Línea en óptimas condiciones. Control visual actualizado. Sin observaciones mayores.',
