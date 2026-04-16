@@ -474,6 +474,13 @@
   .fs-action-resp{font-size:11px;color:var(--tl-gray-500);}
   @media(max-width:768px){.fs-kpi-row{grid-template-columns:1fr 1fr}.fs-s-grid{grid-template-columns:1fr 1fr}}
 
+  /* ── DASHBOARD FILTERS ── */
+  .dash-filters{background:var(--tl-white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .dash-filter-label{font-size:11px;font-weight:700;color:var(--tl-gray-500);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+  .dash-filter-divider{width:1px;height:24px;background:var(--tl-gray-100);flex-shrink:0;}
+  .dash-filter-info{margin-left:auto;font-size:12px;color:var(--tl-gray-500);font-weight:600;}
+  @media(max-width:768px){.dash-filters{gap:10px}.dash-filter-info{margin-left:0}}
+
   /* ── COMING SOON ── */
   .coming-soon-wrap{max-width:600px;margin:60px auto;text-align:center;}
   .coming-soon-icon{font-size:72px;margin-bottom:24px;opacity:0.7;}
@@ -646,6 +653,16 @@
   <div class="module" id="moduleDashboard">
     <div class="screen-title animate-in">Dashboard</div>
     <div class="screen-desc animate-in">Indicadores de Liberación de Primera Pieza — Datos demo</div>
+
+    <!-- Filtros -->
+    <div class="dash-filters">
+      <span class="dash-filter-label">BU</span>
+      <div id="dashBUChips" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      <div class="dash-filter-divider"></div>
+      <span class="dash-filter-label">Mes</span>
+      <div id="dashMesChips" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      <span class="dash-filter-info" id="dashFilterInfo"></span>
+    </div>
 
     <!-- KPIs -->
     <div class="dash-kpi-grid" id="dashKPIs"></div>
@@ -857,6 +874,7 @@ let inspId=1,resId=1;
 
 /* Demo data for dashboard (simulates a populated database) */
 const demo_inspections=[
+  /* ── Abril 2026 – CHL ── */
   {id:'D01',folio:'TL-20260414-A1B2C3',fecha:'14/04/2026',hora:'06:18',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
   {id:'D02',folio:'TL-20260414-D4E5F6',fecha:'14/04/2026',hora:'06:45',bu:'CHL',product:'Headlamp 920R',pn:'TL-920-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-041',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
   {id:'D03',folio:'TL-20260414-G7H8I9',fecha:'14/04/2026',hora:'07:10',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-042',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Se segregó pieza. Reajuste de torquímetro. Supervisó auditor QA-05.'},
@@ -867,6 +885,20 @@ const demo_inspections=[
   {id:'D08',folio:'TL-20260414-V4W5X6',fecha:'14/04/2026',hora:'22:10',bu:'CHL',product:'Headlamp 800',pn:'TL-800-C',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-046',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
   {id:'D09',folio:'TL-20260415-Y7Z8A9',fecha:'15/04/2026',hora:'06:12',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-047',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
   {id:'D10',folio:'TL-20260415-B1C2D3',fecha:'15/04/2026',hora:'06:50',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-047',resultado:'CONDITIONAL',pass_count:6,fail_count:1,contencion:'Amperaje ligeramente bajo. Fuente calibrada. Liberación autorizada por QA-02.'},
+  /* ── Marzo 2026 – CHL ── */
+  {id:'D11',folio:'TL-20260328-C4D5E6',fecha:'28/03/2026',hora:'06:22',bu:'CHL',product:'Headlamp 920L',pn:'TL-920-L',num_operador:'OP-001',operador:'Juan Rodríguez',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D12',folio:'TL-20260328-F7G8H9',fecha:'28/03/2026',hora:'07:05',bu:'CHL',product:'Headlamp 120R',pn:'TL-120-R',num_operador:'OP-003',operador:'Carlos Vega',turno:1,lote:'L-2026-031',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D13',folio:'TL-20260328-I1J2K3',fecha:'28/03/2026',hora:'14:30',bu:'CHL',product:'Headlamp 800',pn:'TL-800-C',num_operador:'OP-005',operador:'Luis Méndez',turno:2,lote:'L-2026-032',resultado:'CONDITIONAL',pass_count:5,fail_count:2,contencion:'Fuga de sellado detectada. Pieza segregada. Proveedor notificado.'},
+  {id:'D14',folio:'TL-20260329-L4M5N6',fecha:'29/03/2026',hora:'06:40',bu:'CHL',product:'Headlamp 920R',pn:'TL-920-R',num_operador:'OP-002',operador:'María López',turno:1,lote:'L-2026-033',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  {id:'D15',folio:'TL-20260330-O7P8Q9',fecha:'30/03/2026',hora:'22:15',bu:'CHL',product:'Headlamp 120L',pn:'TL-120-L',num_operador:'OP-006',operador:'Pedro Ruiz',turno:3,lote:'L-2026-034',resultado:'PASS',pass_count:7,fail_count:0,contencion:null},
+  /* ── Marzo 2026 – RIGID ── */
+  {id:'D16',folio:'RG-20260325-A1B2C3',fecha:'25/03/2026',hora:'07:10',bu:'RIGID',product:'LED Bar 20"',pn:'RG-LB-020',num_operador:'OP-R01',operador:'Sofia Herrera',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D17',folio:'RG-20260325-D4E5F6',fecha:'25/03/2026',hora:'08:00',bu:'RIGID',product:'LED Bar 40"',pn:'RG-LB-040',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-011',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D18',folio:'RG-20260326-G7H8I9',fecha:'26/03/2026',hora:'14:20',bu:'RIGID',product:'LED Bar 20"',pn:'RG-LB-020',num_operador:'OP-R01',operador:'Sofia Herrera',turno:2,lote:'R-2026-012',resultado:'CONDITIONAL',pass_count:5,fail_count:1,contencion:'Intensidad lumínica por debajo del mínimo en prueba de campo.'},
+  {id:'D19',folio:'RG-20260327-J1K2L3',fecha:'27/03/2026',hora:'06:55',bu:'RIGID',product:'Spot Light 6"',pn:'RG-SL-006',num_operador:'OP-R03',operador:'Diego Castro',turno:1,lote:'R-2026-013',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  /* ── Abril 2026 – RIGID ── */
+  {id:'D20',folio:'RG-20260410-M4N5O6',fecha:'10/04/2026',hora:'07:30',bu:'RIGID',product:'LED Bar 40"',pn:'RG-LB-040',num_operador:'OP-R02',operador:'Marco Jiménez',turno:1,lote:'R-2026-021',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
+  {id:'D21',folio:'RG-20260411-P7Q8R9',fecha:'11/04/2026',hora:'14:10',bu:'RIGID',product:'Spot Light 6"',pn:'RG-SL-006',num_operador:'OP-R03',operador:'Diego Castro',turno:2,lote:'R-2026-022',resultado:'PASS',pass_count:6,fail_count:0,contencion:null},
 ];
 const demo_alertas=[
   {id:'ALT-001',titulo:'Amperaje fuera de spec — línea 3',severidad:'critica',status:'abierta',producto:'Headlamp 920L',lote:'L-2026-041',fecha:'14/04/2026',responsable:'QA-05 / J. Rodríguez',descripcion:'Amperaje medido 3.6A vs LSL 3.8A. Se detectó en 3 inspecciones consecutivas del turno 1.'},
@@ -1136,6 +1168,7 @@ function openModule(name){
     document.getElementById('lpfNav').style.display='none';
     document.getElementById('dbTabBtn').style.display='none';
     crumb.textContent='/ Dashboard';
+    dashFilterBU='all'; dashFilterMes='all';
     renderDashboard();
   } else if(name==='reclamaciones'){
     document.getElementById('moduleReclamaciones').classList.add('active');
@@ -1413,9 +1446,43 @@ function allInspections(){
   return [...demo_inspections,...db_inspections.map(r=>({...r,id:'L'+r.id}))];
 }
 
+let dashFilterBU='all', dashFilterMes='all';
+
+function mesLabel(mmyyyy){
+  const[mm,yyyy]=mmyyyy.split('/');
+  const n=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${n[parseInt(mm)]} ${yyyy}`;
+}
+
+function setDashFilter(type,val){
+  if(type==='bu') dashFilterBU=val;
+  else dashFilterMes=val;
+  renderDashboard();
+}
+
 function renderDashboard(){
-  const all=allInspections();
+  const fullAll=allInspections();
+
+  /* ── Build filter chips from full dataset ── */
+  const buList=[...new Set(fullAll.map(r=>r.bu).filter(Boolean))].sort();
+  const mesList=[...new Set(fullAll.map(r=>r.fecha?r.fecha.slice(3):null).filter(Boolean))]
+    .sort((a,b)=>{const[ma,ya]=a.split('/');const[mb,yb]=b.split('/');return (ya*12+parseInt(ma))-(yb*12+parseInt(mb));});
+  document.getElementById('dashBUChips').innerHTML=
+    `<span class="gr-chip${dashFilterBU==='all'?' active':''}" onclick="setDashFilter('bu','all')">Todas</span>`+
+    buList.map(bu=>`<span class="gr-chip${dashFilterBU===bu?' active':''}" onclick="setDashFilter('bu','${bu}')">${bu}</span>`).join('');
+  document.getElementById('dashMesChips').innerHTML=
+    `<span class="gr-chip${dashFilterMes==='all'?' active':''}" onclick="setDashFilter('mes','all')">Todos</span>`+
+    mesList.map(m=>`<span class="gr-chip${dashFilterMes===m?' active':''}" onclick="setDashFilter('mes','${m}')">${mesLabel(m)}</span>`).join('');
+
+  /* ── Apply filters ── */
+  let all=fullAll;
+  if(dashFilterBU!=='all') all=all.filter(r=>r.bu===dashFilterBU);
+  if(dashFilterMes!=='all') all=all.filter(r=>r.fecha&&r.fecha.slice(3)===dashFilterMes);
   const total=all.length;
+  const activeFilters=[(dashFilterBU!=='all'?dashFilterBU:null),(dashFilterMes!=='all'?mesLabel(dashFilterMes):null)].filter(Boolean);
+  document.getElementById('dashFilterInfo').textContent=
+    total+' registro'+(total!==1?'s':'')+(activeFilters.length?' — '+activeFilters.join(' · '):'');
+
   const passCount=all.filter(r=>r.resultado==='PASS').length;
   const condCount=all.filter(r=>r.resultado==='CONDITIONAL').length;
   const totalFails=all.reduce((s,r)=>s+r.fail_count,0);
@@ -1429,20 +1496,18 @@ function renderDashboard(){
     <div class="kpi-card kpi-red animate-in"><div class="kpi-label">Controles Fallidos</div><div class="kpi-value">${totalFails}</div><div class="kpi-sub">en todas las inspecciones</div></div>`;
 
   /* Donut — resultado global */
-  const r=70,cx=85,cy=85,circ=2*Math.PI*r;
+  const rv=70,cx=85,cy=85,circ=2*Math.PI*rv;
   const passFrac=total?passCount/total:0;
   const condFrac=total?condCount/total:0;
   const passDash=passFrac*circ;
   const condDash=condFrac*circ;
-  const passOffset=0;
-  const condOffset=-(passDash);
   document.getElementById('dashDonut').innerHTML=`
     <div class="donut-wrap">
       <svg class="donut-svg" width="170" height="170" viewBox="0 0 170 170">
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--tl-gray-100)" stroke-width="22"/>
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--tl-green)" stroke-width="22"
+        <circle cx="${cx}" cy="${cy}" r="${rv}" fill="none" stroke="var(--tl-gray-100)" stroke-width="22"/>
+        <circle cx="${cx}" cy="${cy}" r="${rv}" fill="none" stroke="var(--tl-green)" stroke-width="22"
           stroke-dasharray="${passDash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--tl-amber)" stroke-width="22"
+        <circle cx="${cx}" cy="${cy}" r="${rv}" fill="none" stroke="var(--tl-amber)" stroke-width="22"
           stroke-dasharray="${condDash} ${circ}" stroke-dashoffset="${-(passDash)+circ/4}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
         <text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="28" fill="var(--tl-black)">${passRate}%</text>
         <text x="${cx}" y="${cy+14}" text-anchor="middle" font-family="Barlow,sans-serif" font-size="11" fill="var(--tl-gray-500)">Aprobación</text>
@@ -1459,12 +1524,12 @@ function renderDashboard(){
   const byProduct={};
   all.forEach(r=>{if(!byProduct[r.product])byProduct[r.product]=0;byProduct[r.product]++;});
   const maxProd=Math.max(...Object.values(byProduct),1);
-  document.getElementById('dashByProduct').innerHTML=`<div class="bar-chart">${Object.entries(byProduct).sort((a,b)=>b[1]-a[1]).map(([name,cnt])=>`
+  document.getElementById('dashByProduct').innerHTML=total?`<div class="bar-chart">${Object.entries(byProduct).sort((a,b)=>b[1]-a[1]).map(([name,cnt])=>`
     <div class="bar-row">
-      <div class="bar-label" title="${name}">${name.replace('Headlamp ','HL ')}</div>
+      <div class="bar-label" title="${name}">${name.replace('Headlamp ','HL ').replace(' Bar ',' ')}</div>
       <div class="bar-track"><div class="bar-fill blue" style="width:${Math.round(cnt/maxProd*100)}%"><span class="bar-val">${cnt}</span></div></div>
       <div class="bar-pct">${Math.round(cnt/total*100)}%</div>
-    </div>`).join('')}</div>`;
+    </div>`).join('')}</div>`:'<p style="color:var(--tl-gray-500);text-align:center;padding:24px;">Sin datos para los filtros seleccionados</p>';
 
   /* Bar — tasa de aprobación por turno */
   const byShift={1:{pass:0,total:0},2:{pass:0,total:0},3:{pass:0,total:0}};
@@ -1472,11 +1537,11 @@ function renderDashboard(){
   document.getElementById('dashByShift').innerHTML=`<div class="bar-chart">${[1,2,3].map(t=>{const d=byShift[t],pct=d.total?Math.round(d.pass/d.total*100):0,color=pct>=90?'green':pct>=70?'amber':'red';return`
     <div class="bar-row">
       <div class="bar-label">Turno ${t}</div>
-      <div class="bar-track"><div class="bar-fill ${color}" style="width:${pct}%"><span class="bar-val">${pct}%</span></div></div>
+      <div class="bar-track"><div class="bar-fill ${color}" style="width:${pct}%"><span class="bar-val">${d.total?pct+'%':'—'}</span></div></div>
       <div class="bar-pct">${d.total} insp.</div>
     </div>`;}).join('')}</div>`;
 
-  /* Bar �� controles con más fallas (demo fixed) */
+  /* Bar — controles con más fallas (demo fixed) */
   const maxFail=demo_failed_controls[0].count;
   document.getElementById('dashFailedControls').innerHTML=`<div class="bar-chart">${demo_failed_controls.map(c=>`
     <div class="bar-row">
@@ -1487,11 +1552,12 @@ function renderDashboard(){
 
   /* Tabla últimas 8 inspecciones */
   const recent=all.slice(-8).reverse();
-  document.getElementById('dashRecent').innerHTML=`
+  document.getElementById('dashRecent').innerHTML=recent.length?`
     <table class="dash-table">
-      <thead><tr><th>ID</th><th>Fecha</th><th>Producto</th><th>Operador</th><th>Turno</th><th>OK</th><th>Fail</th><th>Resultado</th></tr></thead>
+      <thead><tr><th>ID</th><th>BU</th><th>Fecha</th><th>Producto</th><th>Operador</th><th>Turno</th><th>OK</th><th>Fail</th><th>Resultado</th></tr></thead>
       <tbody>${recent.map(r=>`<tr>
         <td style="font-weight:700;font-size:11px">${r.id}</td>
+        <td><span style="font-size:11px;font-weight:700;color:var(--tl-blue)">${r.bu||'—'}</span></td>
         <td>${r.fecha} ${r.hora}</td>
         <td style="font-weight:600">${r.product}</td>
         <td>${r.operador}</td>
@@ -1500,7 +1566,7 @@ function renderDashboard(){
         <td style="color:${r.fail_count?'var(--tl-fail)':'var(--tl-gray-500)'};font-weight:700">${r.fail_count}</td>
         <td><span class="dash-badge ${r.resultado.toLowerCase()}">${r.resultado==='CONDITIONAL'?'COND.':r.resultado}</span></td>
       </tr>`).join('')}</tbody>
-    </table>`;
+    </table>`:'<p style="color:var(--tl-gray-500);text-align:center;padding:24px;">Sin registros para los filtros seleccionados</p>';
 }
 
 /* ── GESTIÓN DE RECLAMOS ── */
